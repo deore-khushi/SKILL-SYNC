@@ -9,12 +9,28 @@
 }
 
 :root {
-    --primary: #7c3aed;
-    --primary-dark: #6d28d9;
-    --primary-light: #ede9fe;
-    --text-dark: #1e1b4b;
+    /* ===== New Colour Palette ===== */
+    --primary: #395176;
+    --primary-dark: #2c3e5a;
+    --primary-light: #bdb0ca;
+    --accent: #90b1cf;
+    --muted: #9295b7;
+
+    /* Supporting colours */
+    --text-dark: #1e293b;
     --text-muted: #64748b;
-    --bg: #f8fafc;
+
+    /* === Smooth transition colours (change these to recolour the blend) === */
+    /* 1. Add these variables inside :root */
+    --gradient-color-1: #E8F0FE;
+    --gradient-color-2: #EEF2F9;
+    --gradient-color-3: #F0E9F7;
+    --gradient-color-4: #ffffff;
+
+    --bg: linear-gradient(135deg,
+            var(--gradient-color-1) 8%,
+            var(--gradient-color-2) 40%,
+            var(--gradient-color-3) 100%);
     --white: #ffffff;
     --radius: 16px;
 }
@@ -23,7 +39,7 @@ body {
     font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    background: var(--bg);
+    background: var(--white);
 }
 
 /* ---------- Header ---------- */
@@ -49,7 +65,10 @@ header {
 }
 
 .logo-icon {
-    font-size: 1.4rem;
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    display: block;
 }
 
 nav {
@@ -88,7 +107,7 @@ nav a:hover {
 .login {
     background: transparent;
     color: var(--primary);
-    border: 1.5px solid #c4b5fd;
+    border: 1.5px solid var(--primary);
 }
 
 .login:hover {
@@ -103,33 +122,46 @@ nav a:hover {
 .signup:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(124, 58, 237, 0.35);
+    box-shadow: 0 6px 18px rgba(57, 81, 118, 0.35);
 }
 
-/* ---------- Hero with Floating Photos + Bottom Glow ---------- */
+/* ---------- Hero with Floating Photos + Smooth Bottom Fade ---------- */
+/* 2. Replace the entire .hero rule with this */
 .hero {
     position: relative;
     min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
     overflow: hidden;
-    padding: 4rem 2rem;
+    padding: 4rem 2rem 10rem;
+
+    background:
+        linear-gradient(to bottom,
+            transparent 0%,
+            transparent 35%,
+            var(--gradient-color-3) 55%,
+            var(--gradient-color-4) 78%,
+            var(--gradient-color-4) 100%),
+        var(--bg);
 }
 
-/* Soft purple glow from bottom */
+/* Soft, modern bottom glow – no hard edge */
+/* 3. Replace the entire .hero::after rule with this */
 .hero::after {
     content: "";
     position: absolute;
-    bottom: -120px;
+    bottom: -180px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
-    height: 350px;
-    background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.18) 0%, transparent 70%);
+    width: 160%;
+    height: 500px;
+    background: radial-gradient(ellipse at center bottom,
+            rgba(57, 81, 118, 0.06) 0%,
+            transparent 70%);
     pointer-events: none;
     z-index: 0;
+    filter: blur(40px);
 }
 
 .hero-content {
@@ -169,7 +201,7 @@ nav a:hover {
 
 /* Primary Button */
 .primary-btn {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    background: var(--primary);
     color: #fff;
     border: none;
     padding: 14px 30px;
@@ -188,8 +220,8 @@ nav a:hover {
 /* Secondary Button */
 .secondary-btn {
     background: transparent;
-    color: #a855f7;
-    border: 2px solid #a855f7;
+    color: var(--primary);
+    border: 2px solid var(--primary);
     padding: 14px 30px;
     border-radius: 50px;
     font-size: 16px;
@@ -199,7 +231,7 @@ nav a:hover {
 }
 
 .secondary-btn:hover {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    background: var(--primary-light);
     color: #fff;
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(168, 85, 247, .35);
@@ -301,6 +333,20 @@ nav a:hover {
     padding: 5.5rem 4rem;
     background: var(--white);
     text-align: center;
+    margin-top: -2px;
+    /* sits inside the hero fade – removes residual line */
+    position: relative;
+    z-index: 1;
+}
+
+/* 4. Add / replace this rule for the next section */
+.skills-section {
+    background: var(--white);
+    margin-top: -40px;
+    /* pulls the white section into the fade */
+    padding-top: calc(5.5rem + 40px);
+    position: relative;
+    z-index: 2;
 }
 
 .skills-section h2 {
@@ -334,8 +380,8 @@ nav a:hover {
 
 .skill-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 36px rgba(124, 58, 237, 0.12);
-    border-color: #c4b5fd;
+    box-shadow: 0 16px 36px rgba(57, 81, 118, 0.12);
+    border-color: var(--accent);
 }
 
 .skill-icon {
@@ -358,7 +404,7 @@ nav a:hover {
 /* ---------- About ---------- */
 .about {
     padding: 5.5rem 4rem;
-    background: var(--bg);
+    background: var(--white);
     text-align: center;
 }
 
@@ -366,6 +412,7 @@ nav a:hover {
     font-size: 2.4rem;
     font-weight: 700;
     margin-bottom: 3.2rem;
+    margin-top: 2.2rem;
 }
 
 .about-grid {
@@ -387,7 +434,7 @@ nav a:hover {
 .about-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-    border-color: #c4b5fd;
+    border-color: var(--accent);
 }
 
 .about-icon {
@@ -439,8 +486,8 @@ nav a:hover {
 .card:hover {
     transform: translateY(-8px);
     background: var(--white);
-    box-shadow: 0 16px 40px rgba(124, 58, 237, 0.1);
-    border-color: #c4b5fd;
+    box-shadow: 0 16px 40px rgba(57, 81, 118, 0.1);
+    border-color: var(--accent);
 }
 
 .card h3 {
@@ -458,7 +505,7 @@ nav a:hover {
 /* ---------- Steps ---------- */
 .steps {
     padding: 5.5rem 4rem;
-    background: linear-gradient(180deg, #f5f3ff 0%, #ede9fe 100%);
+    background: var(--bg);
     text-align: center;
 }
 
@@ -527,7 +574,6 @@ nav a:hover {
 }
 
 .review {
-    background: var(--bg);
     padding: 2.2rem;
     border-radius: 16px;
     text-align: left;
@@ -556,7 +602,7 @@ nav a:hover {
 /* ---------- FAQ ---------- */
 .faq {
     padding: 5.5rem 4rem;
-    background: var(--bg);
+    background: var(--white);
     max-width: 800px;
     margin: 0 auto;
 }
@@ -569,7 +615,7 @@ nav a:hover {
 }
 
 .faq-item {
-    background: var(--white);
+    background: var(--bg);
     padding: 1.8rem 2rem;
     border-radius: 14px;
     margin-bottom: 1.2rem;
@@ -588,7 +634,7 @@ nav a:hover {
 
 /* ---------- Footer ---------- */
 footer {
-    background: black;
+    background: rgb(32, 31, 31);
     color: #c4b5fd;
     padding: 3rem 4rem 2rem;
 }
@@ -601,8 +647,9 @@ footer {
 }
 
 .footer-brand {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: var(--accent);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -624,195 +671,662 @@ footer {
     text-align: center;
     font-size: 0.9rem;
     opacity: 0.8;
-    border-top: 1px solid rgba(196, 181, 253, 0.2);
+    border-top: 1px solid var(--primary-light);
     padding-top: 1.5rem;
 }
-/* ================= CHATBOT ================= */
+
+/* =========================================================
+   SKILLSYNC CHATBOT
+   ========================================================= */
+
 .chatbot-container {
     position: fixed;
-    bottom: 28px;
     right: 28px;
+    bottom: 28px;
     z-index: 9999;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* Floating Button */
 .chatbot-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    width: 62px;
+    height: 62px;
     border: none;
-    color: white;
-    font-size: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #395176, #9295b7);
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    box-shadow:
+        0 8px 22px rgba(57, 81, 118, 0.35),
+        0 3px 8px rgba(0, 0, 0, 0.08);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.chatbot-btn img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    display: block;
 }
 
 .chatbot-btn:hover {
     transform: scale(1.08);
-    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.5);
+    box-shadow:
+        0 12px 30px rgba(57, 81, 118, 0.45),
+        0 5px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Chat Window */
+.chatbot-btn:active {
+    transform: scale(0.96);
+}
+
 .chat-window {
     position: absolute;
-    bottom: 80px;
     right: 0;
+    bottom: 78px;
     width: 360px;
     height: 480px;
-    background: white;
+    background: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
     display: none;
     flex-direction: column;
-    overflow: hidden;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #d8e0e7;
+    box-shadow:
+        0 20px 55px rgba(57, 81, 118, 0.18),
+        0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .chat-window.active {
     display: flex;
-    animation: slideUp 0.3s ease;
+    animation: chatSlideUp 0.3s ease;
 }
 
-@keyframes slideUp {
+@keyframes chatSlideUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(20px) scale(0.97);
     }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.chat-header {
+    min-height: 72px;
+    padding: 14px 17px;
+    background: linear-gradient(135deg, #395176, #9295b7);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.chat-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.chat-avatar img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.chat-header h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.chat-header p {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.chat-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.chat-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #90b1cf;
+    box-shadow: 0 0 6px rgba(144, 177, 207, 0.8);
+}
+
+.chat-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.chat-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg);
+}
+
+.chat-body {
+    flex: 1;
+    padding: 18px;
+    overflow-y: auto;
+    background: #f5f6f8;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+}
+
+.chat-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background: #bdb0ca;
+    border-radius: 10px;
+}
+
+.chat-body::-webkit-scrollbar-thumb:hover {
+    background: #9295b7;
+}
+
+.bot-message,
+.user-message {
+    max-width: 82%;
+    padding: 10px 14px;
+    border-radius: 15px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    animation: messageAppear 0.25s ease;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Header */
-.chat-header {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    color: white;
-    padding: 16px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-header-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.chat-avatar {
-    width: 42px;
-    height: 42px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.chat-header h4 {
-    font-size: 15px;
-    font-weight: 600;
-    margin: 0;
-}
-
-.chat-header p {
-    font-size: 12px;
-    opacity: 0.85;
-    margin: 0;
-}
-
-.chat-close {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: 0.2s;
-}
-
-.chat-close:hover {
-    opacity: 1;
-}
-
-/* Chat Body */
-.chat-body {
-    flex: 1;
-    padding: 18px;
-    overflow-y: auto;
-    background: #f8fafc;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.bot-message,
-.user-message {
-    max-width: 80%;
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-size: 14px;
-    line-height: 1.45;
-}
-
 .bot-message {
-    background: white;
-    border: 1px solid #e2e8f0;
     align-self: flex-start;
+    background: #ffffff;
+    color: #3d4c60;
+    border: 1px solid #d8e0e7;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(57, 81, 118, 0.06);
+}
+
+.user-message {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #395176, #9295b7);
+    color: #ffffff;
+    border: none;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(57, 81, 118, 0.18);
+}
+
+.message-time {
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+    opacity: 0.6;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    padding: 10px 13px;
+    background: #ffffff;
+    border: 1px solid #d8e0e7;
+    border-radius: 14px;
     border-bottom-left-radius: 4px;
 }
 
-.user-message {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #9295b7;
+    animation: typing 1.2s infinite ease-in-out;
 }
 
-/* Footer */
-.chat-footer {
-    padding: 12px 14px;
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes typing {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}
+
+.quick-replies {
     display: flex;
-    gap: 10px;
-    border-top: 1px solid #e2e8f0;
-    background: white;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 3px;
+}
+
+.quick-reply {
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: #ffffff;
+    color: #395176;
+    border: 1px solid #bdb0ca;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-reply:hover {
+    background: #e8e6ef;
+    border-color: #9295b7;
+    transform: translateY(-1px);
+}
+
+.chat-footer {
+    padding: 11px 13px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #ffffff;
+    border-top: 1px solid #d8e0e7;
 }
 
 .chat-footer input {
     flex: 1;
-    border: 1px solid #e2e8f0;
+    min-width: 0;
+    height: 42px;
+    padding: 0 16px;
     border-radius: 25px;
-    padding: 10px 16px;
-    font-size: 14px;
+    border: 1px solid #d8e0e7;
+    background: #f5f6f8;
+    color: #26384f;
+    font-family: inherit;
+    font-size: 13px;
     outline: none;
-    transition: 0.2s;
+    transition: all 0.2s ease;
+}
+
+.chat-footer input::placeholder {
+    color: #65758a;
 }
 
 .chat-footer input:focus {
-    border-color: #7c3aed;
+    background: #ffffff;
+    border-color: #9295b7;
+    box-shadow: 0 0 0 3px rgba(146, 149, 183, 0.15);
 }
 
 .chat-footer button {
     width: 42px;
     height: 42px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    flex-shrink: 0;
     border: none;
-    color: white;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #395176, #9295b7);
+    color: #ffffff;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(57, 81, 118, 0.25);
 }
 
 .chat-footer button:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
+    box-shadow: 0 6px 16px rgba(57, 81, 118, 0.35);
+}
+
+.chat-footer button:active {
+    transform: scale(0.95);
+}
+
+.chat-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-icon img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    display: block;
+}
+
+/* =========================================================
+   SkillSync – Premium Scroll & Motion Layer
+   ========================================================= */
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ---------- 1. HERO ENTRANCE ---------- */
+.float {
+    opacity: 0;
+    transform: translateX(var(--x-start, -140px)) scale(0.95) rotate(var(--rot, 0deg));
+    transition:
+        transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.4s ease;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* Direction + rotation */
+.float-1 {
+    --rot: -6deg;
+    --x-start: -140px;
+}
+
+.float-2 {
+    --rot: 5deg;
+    --x-start: 140px;
+}
+
+.float-3 {
+    --rot: 4deg;
+    --x-start: -140px;
+}
+
+.float-4 {
+    --rot: -4deg;
+    --x-start: 140px;
+}
+
+.float-5 {
+    --rot: -8deg;
+    --x-start: -140px;
+}
+
+.float-6 {
+    --rot: 7deg;
+    --x-start: 140px;
+}
+
+.float-7 {
+    --rot: 9deg;
+    --x-start: -140px;
+}
+
+.float-8 {
+    --rot: -9deg;
+    --x-start: 140px;
+}
+
+/* Staggered entrance */
+.float-1 {
+    transition-delay: 0.05s;
+}
+
+.float-2 {
+    transition-delay: 0.15s;
+}
+
+.float-3 {
+    transition-delay: 0.25s;
+}
+
+.float-4 {
+    transition-delay: 0.35s;
+}
+
+.float-5 {
+    transition-delay: 0.45s;
+}
+
+.float-6 {
+    transition-delay: 0.55s;
+}
+
+.float-7 {
+    transition-delay: 0.65s;
+}
+
+.float-8 {
+    transition-delay: 0.75s;
+}
+
+.float.entered {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(var(--rot, 0deg));
+}
+
+/* Continuous gentle float after entrance */
+.float.floating {
+    animation: floatIdle 5s ease-in-out infinite;
+}
+
+.float:hover {
+    animation-play-state: paused;
+}
+
+@keyframes floatIdle {
+
+    0%,
+    100% {
+        transform: translateX(0) scale(1) rotate(var(--rot, 0deg)) translateY(0);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 20px 50px rgba(57, 81, 118, 0.12);
+    }
+
+    50% {
+        transform: translateX(0) scale(1) rotate(var(--rot, 0deg)) translateY(-10px);
+        box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12), 0 28px 60px rgba(57, 81, 118, 0.18);
+    }
+}
+
+/* Hero text enters from the right */
+.hero-content {
+    opacity: 0;
+    transform: translateX(80px) scale(0.95);
+    transition:
+        transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+}
+
+.hero-content.entered {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+/* ---------- 2. SCROLL REVEAL SYSTEM ---------- */
+[data-reveal] {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition:
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger, 0s);
+}
+
+[data-reveal].in-view {
+    opacity: 1;
+    transform: none;
+}
+
+/* Animation variants */
+[data-reveal="fade-up"] {
+    transform: translateY(48px);
+}
+
+[data-reveal="fade-in"] {
+    transform: translateY(16px);
+}
+
+[data-reveal="zoom-in"] {
+    transform: scale(0.82);
+}
+
+[data-reveal="slide-left"] {
+    transform: translateX(-80px);
+}
+
+[data-reveal="slide-right"] {
+    transform: translateX(80px);
+}
+
+/* Extra variants you used in HTML */
+[data-reveal="alt-image"] {
+    transform: scale(0.7);
+}
+
+[data-reveal="alt-text"] {
+    transform: translateY(20px);
+}
+
+/* Mobile – smaller distances */
+@media (max-width: 768px) {
+    [data-reveal="fade-up"] {
+        transform: translateY(28px);
+    }
+
+    [data-reveal="slide-left"] {
+        transform: translateX(-40px);
+    }
+
+    [data-reveal="slide-right"] {
+        transform: translateX(40px);
+    }
+
+    .float {
+        --x-start: -70px !important;
+    }
+
+    .float-2,
+    .float-4,
+    .float-6,
+    .float-8 {
+        --x-start: 70px !important;
+    }
+}
+
+/* ---------- 3. HOVER EFFECTS ---------- */
+.skill-card,
+.about-card,
+.card,
+.step-card,
+.faq-item {
+    transition:
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.35s ease,
+        border-color 0.3s ease;
+}
+
+.skill-card:hover,
+.about-card:hover,
+.card:hover,
+.step-card:hover,
+.faq-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(57, 81, 118, 0.14);
+}
+
+/* Image / icon zoom */
+.float:hover,
+[data-reveal="alt-image"]:hover {
+    transform: scale(1.08);
+}
+
+/* Glowing buttons */
+.primary-btn,
+.secondary-btn,
+.signup,
+.login {
+    transition:
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.primary-btn:hover,
+.signup:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 0 0 4px rgba(57, 81, 118, 0.15),
+        0 12px 28px rgba(57, 81, 118, 0.35);
+}
+
+.secondary-btn:hover,
+.login:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 0 0 4px rgba(57, 81, 118, 0.12),
+        0 10px 24px rgba(57, 81, 118, 0.2);
 }

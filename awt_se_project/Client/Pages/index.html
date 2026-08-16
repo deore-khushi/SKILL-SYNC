@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="../css/desktop.css" media="screen and (min-width:769px)">
     <link rel="stylesheet" href="../css/mobile.css" media="screen and (max-width:768px)">
+    <link rel="stylesheet" href="../css/animations.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="../js/app.js"></script>
@@ -21,7 +22,7 @@
     <header>
         <div class="logo">
 
-            <span class="logo-icon" style="color: #8A2BE2;">∞</span>
+            <img src="images/logo.png" alt="SkillSync Logo" class="logo-icon">
             𝗌𝗄𝗂𝗅𝗅𝗌𝗒𝗇𝖼
         </div>
 
@@ -43,7 +44,7 @@
     <!-- ================= HERO ================= -->
     <section class="hero" id="home">
 
-        <!-- Floating Images -->
+        <!-- Floating Images: entrance handled by .float / .entered / .floating in animations.css+js -->
         <div class="floating-images">
             <img src="../images/clg.avif" class="float float-1" alt="">
             <img src="../images/a.jpg" class="float float-3" alt="">
@@ -60,92 +61,92 @@
             <h1>{{hero.title}}</h1>
             <p>{{hero.subtitle}}</p>
             <div class="hero-buttons">
-                <button class="primary-btn">Start Learning</button>
-                <button class="secondary-btn">Explore Skills</button>
+                <button class="primary-btn" data-reveal="zoom-in">Start Learning</button>
+                <button class="secondary-btn" data-reveal="zoom-in">Explore Skills</button>
             </div>
         </div>
 
     </section>
     <!-- ================= ABOUT ================= -->
     <section class="about" id="about">
-        <h2>Why SkillSync?</h2>
+        <h2 data-reveal="fade-in">Why SkillSync?</h2>
 
         <div class="about-grid">
-            <div class="about-card">
-                <div class="about-icon">🎓</div>
-                <h3>Showcase Skills</h3>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">🎓</div>
+                <h3 data-reveal="alt-text">Showcase Skills</h3>
                 <p>Build a strong profile and get noticed</p>
             </div>
-            <div class="about-card">
-                <div class="about-icon">📚</div>
-                <h3>Learn from Peers</h3>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">📚</div>
+                <h3 data-reveal="alt-text">Learn from Peers</h3>
                 <p>Get real knowledge from talented students</p>
             </div>
-            <div class="about-card">
-                <div class="about-icon">🪙</div>
-                <h3>Earn Skill Tokens</h3>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">🪙</div>
+                <h3 data-reveal="alt-text">Earn Skill Tokens</h3>
                 <p>Get rewarded every time you teach</p>
             </div>
-            <div class="about-card">
-                <div class="about-icon">👥</div>
-                <h3>Build Teams</h3>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">👥</div>
+                <h3 data-reveal="alt-text">Build Teams</h3>
                 <p>Find the perfect teammates for projects</p>
             </div>
         </div>
     </section>
-
-    <!-- ================= SKILLS CATEGORIES (like your image) ================= -->
-    <section class="skills-section" id="skills">
-        <h2>Popular Skills</h2>
-        <p class="section-subtitle">Join thousands of students learning and teaching right now</p>
-
-        <div class="skills-grid">
-            <div class="skill-card">
-                <div class="skill-icon">💻</div>
-                <h3>Web Development</h3>
-
-            </div>
-
-            <div class="skill-card">
-                <div class="skill-icon">🐍</div>
-                <h3>Python</h3>
-
-            </div>
-
-            <div class="skill-card">
-                <div class="skill-icon">🎨</div>
-                <h3>UI/UX Design</h3>
-
-            </div>
-
-            <div class="skill-card">
-                <div class="skill-icon">🤖</div>
-                <h3>AI & Machine Learning</h3>
-
-            </div>
-        </div>
-    </section>
-
     <!-- ================= FEATURES (Big Cards) ================= -->
     <section class="features" id="features">
-        <h2>Features</h2>
-        <p class="section-subtitle">Everything you need to grow as a student</p>
+        <h2 data-reveal="fade-in">Features</h2>
+        <p class="section-subtitle" data-reveal="fade-in">Everything you need to grow as a student</p>
 
         <div class="cards">
-            <div class="card" ng-repeat="feature in features">
+            <div class="card" ng-repeat="feature in features" data-reveal="fade-up">
                 <h3>{{feature.title}}</h3>
                 <p>{{feature.desc}}</p>
             </div>
         </div>
     </section>
+    <!-- ================= SKILLS CATEGORIES ================= -->
+    <section class="skills-section" id="skills">
+        <h2 data-reveal="fade-in">Popular Skills</h2>
+        <p class="section-subtitle" data-reveal="fade-in">Join thousands of students learning and teaching right now</p>
+
+        <div class="skills-grid">
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">💻</div>
+                <h3 data-reveal="alt-text">Web Development</h3>
+
+            </div>
+
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">🐍</div>
+                <h3 data-reveal="alt-text">Python</h3>
+
+            </div>
+
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">🎨</div>
+                <h3 data-reveal="alt-text">UI/UX Design</h3>
+
+            </div>
+
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">🤖</div>
+                <h3 data-reveal="alt-text">AI & Machine Learning</h3>
+
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- ================= HOW IT WORKS ================= -->
     <section class="steps">
-        <h2>How It Works</h2>
+        <h2 data-reveal="fade-in">How It Works</h2>
 
         <div class="steps-container">
-            <div class="step-card" ng-repeat="step in steps">
-                <div class="step-number">{{$index + 1}}</div>
+            <div class="step-card" ng-repeat="step in steps" data-reveal="fade-up">
+                <div class="step-number" data-reveal="zoom-in">{{$index + 1}}</div>
                 <p>{{step}}</p>
             </div>
         </div>
@@ -154,10 +155,10 @@
 
     <!-- ================= FAQ ================= -->
     <section class="faq">
-        <h2>Frequently Asked Questions</h2>
+        <h2 data-reveal="fade-in">Frequently Asked Questions</h2>
 
         <div class="faq-list">
-            <div class="faq-item" ng-repeat="q in faq">
+            <div class="faq-item" ng-repeat="q in faq" data-reveal="fade-up">
                 <h3>{{q.question}}</h3>
                 <p>{{q.answer}}</p>
             </div>
@@ -168,7 +169,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
-                <span class="logo-icon" style="color: #c4b5fd;">∞</span> SkillSync
+                <img src="images/logo.png" alt="SkillSync Logo" class="logo-icon"> SkillSync
             </div>
             <div class="footer-links">
                 <a href="#">Privacy</a>
@@ -211,9 +212,13 @@
 
         <!-- Floating Button -->
         <button class="chatbot-btn" ng-click="toggleChat()">
-            <span class="chat-icon">🤖</span>
+
+            <img src="../images/chatbot.png" alt="Chatbot">
+
         </button>
     </div>
+
+    <script src="../js/animations.js"></script>
 </body>
 
 </html>
