@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="skillSyncApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync</title>
+
+    <link rel="stylesheet" href="../css/desktop.css" media="screen and (min-width:769px)">
+    <link rel="stylesheet" href="../css/mobile.css" media="screen and (max-width:768px)">
+    <link rel="stylesheet" href="../css/animations.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../Controllers/homeController.js"></script>
+    <script src="../Controllers/chatbotController.js"></script>
+</head>
+
+<body ng-controller="HomeController">
+
+    <!-- ================= HEADER ================= -->
+    <header>
+        <div class="logo">
+
+            <img src="images/logo.png" alt="SkillSync Logo" class="logo-icon">
+            𝗌𝗄𝗂𝗅𝗅𝗌𝗒𝗇𝖼
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#features">Features</a>
+
+        </nav>
+
+        <div class="buttons">
+            <button class="login">Sign In</button>
+            <button class="signup">Sign Up</button>
+        </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="home">
+
+        <!-- Floating Images: entrance handled by .float / .entered / .floating in animations.css+js -->
+        <div class="floating-images">
+            <img src="../images/clg.avif" class="float float-1" alt="">
+            <img src="../images/a.jpg" class="float float-3" alt="">
+            <img src="../images/boyy.jpg" class="float float-4" alt="">
+            <img src="../images/work.jpg" class="float float-5" alt="">
+            <img src="../images/boy.webp" class="float float-2" alt="">
+            <img src="../images/clgg.avif" class="float float-6" alt="">
+            <img src="../images/tec.jpg" class="float float-7" alt="">
+            <img src="../images/std.jpg" class="float float-8" alt="">
+        </div>
+
+        <!-- Center Content -->
+        <div class="hero-content">
+            <h1>{{hero.title}}</h1>
+            <p>{{hero.subtitle}}</p>
+            <div class="hero-buttons">
+                <button class="primary-btn" data-reveal="zoom-in">Start Learning</button>
+                <button class="secondary-btn" data-reveal="zoom-in">Explore Skills</button>
+            </div>
+        </div>
+
+    </section>
+    <!-- ================= ABOUT ================= -->
+    <section class="about" id="about">
+        <h2 data-reveal="fade-in">Why SkillSync?</h2>
+
+        <div class="about-grid">
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">🎓</div>
+                <h3 data-reveal="alt-text">Showcase Skills</h3>
+                <p>Build a strong profile and get noticed</p>
+            </div>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">📚</div>
+                <h3 data-reveal="alt-text">Learn from Peers</h3>
+                <p>Get real knowledge from talented students</p>
+            </div>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">🪙</div>
+                <h3 data-reveal="alt-text">Earn Skill Tokens</h3>
+                <p>Get rewarded every time you teach</p>
+            </div>
+            <div class="about-card" data-reveal="fade-up">
+                <div class="about-icon" data-reveal="alt-image">👥</div>
+                <h3 data-reveal="alt-text">Build Teams</h3>
+                <p>Find the perfect teammates for projects</p>
+            </div>
+        </div>
+    </section>
+    <!-- ================= FEATURES (Big Cards) ================= -->
+    <section class="features" id="features">
+        <h2 data-reveal="fade-in">Features</h2>
+        <p class="section-subtitle" data-reveal="fade-in">Everything you need to grow as a student</p>
+
+        <div class="cards">
+            <div class="card" ng-repeat="feature in features" data-reveal="fade-up">
+                <h3>{{feature.title}}</h3>
+                <p>{{feature.desc}}</p>
+            </div>
+        </div>
+    </section>
+    <!-- ================= SKILLS CATEGORIES ================= -->
+    <section class="skills-section" id="skills">
+        <h2 data-reveal="fade-in">Popular Skills</h2>
+        <p class="section-subtitle" data-reveal="fade-in">Join thousands of students learning and teaching right now</p>
+
+        <div class="skills-grid">
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">💻</div>
+                <h3 data-reveal="alt-text">Web Development</h3>
+
+            </div>
+
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">🐍</div>
+                <h3 data-reveal="alt-text">Python</h3>
+
+            </div>
+
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">🎨</div>
+                <h3 data-reveal="alt-text">UI/UX Design</h3>
+
+            </div>
+
+            <div class="skill-card" data-reveal="fade-up">
+                <div class="skill-icon" data-reveal="alt-image">🤖</div>
+                <h3 data-reveal="alt-text">AI & Machine Learning</h3>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="steps">
+        <h2 data-reveal="fade-in">How It Works</h2>
+
+        <div class="steps-container">
+            <div class="step-card" ng-repeat="step in steps" data-reveal="fade-up">
+                <div class="step-number" data-reveal="zoom-in">{{$index + 1}}</div>
+                <p>{{step}}</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= FAQ ================= -->
+    <section class="faq">
+        <h2 data-reveal="fade-in">Frequently Asked Questions</h2>
+
+        <div class="faq-list">
+            <div class="faq-item" ng-repeat="q in faq" data-reveal="fade-up">
+                <h3>{{q.question}}</h3>
+                <p>{{q.answer}}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="SkillSync Logo" class="logo-icon"> SkillSync
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+        <p class="copyright">© 2026 SkillSync. All rights reserved.</p>
+    </footer>
+    <!-- ================= CHATBOT ================= -->
+    <!-- ================= CHATBOT ================= -->
+    <div class="chatbot-container" ng-controller="ChatbotController">
+
+        <!-- Chat Window -->
+        <div class="chat-window" ng-class="{'active': isChatOpen}">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-avatar">∞</span>
+                    <div>
+                        <h4>SkillSync Assistant</h4>
+                        <p>Online</p>
+                    </div>
+                </div>
+                <button class="chat-close" ng-click="closeChat()">✕</button>
+            </div>
+
+            <div class="chat-body" id="chatBody">
+                <div ng-repeat="msg in messages"
+                    ng-class="{'bot-message': msg.type === 'bot', 'user-message': msg.type === 'user'}">
+                    <p>{{msg.text}}</p>
+                </div>
+            </div>
+
+            <div class="chat-footer">
+                <input type="text" ng-model="userMessage" ng-keypress="handleKeyPress($event)"
+                    placeholder="Type your message...">
+                <button ng-click="sendMessage()">➤</button>
+            </div>
+        </div>
+
+        <!-- Floating Button -->
+        <button class="chatbot-btn" ng-click="toggleChat()">
+
+            <img src="../images/chatbot.png" alt="Chatbot">
+
+        </button>
+    </div>
+
+    <script src="../js/animations.js"></script>
+</body>
+
+</html>
