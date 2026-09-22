@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en" ng-app="skillSyncApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skill Wallet · SkillSync</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/wallet.css" />
+    <link rel="stylesheet" href="../css/desktop.css" />
+    
+    
+    <link rel="stylesheet" href="../css/mobile.css" />
+    <link rel="stylesheet" href="../css/sidebar_header.css" />
+  </head>
+
+  <body ng-controller="WalletController">
+    <div class="dashboard" ng-class="{'sidebar-open': sidebarOpen}">
+
+      <!-- ================= HEADER ================= -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-btn" ng-click="toggleSidebar()" aria-label="Toggle navigation menu">☰</button>
+          <div class="logo">
+            <img src="images/logo.png" alt="SkillSync Logo" class="logo-icon" />
+            𝗌𝗄𝗂𝗅𝗅𝗌𝗒𝗇𝖼
+          </div>
+        </div>
+
+        <div class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input type="text" placeholder="Search skills, students..." ng-model="searchText" aria-label="Search skills and students" />
+        </div>
+
+        <div class="header-right">
+          <button class="header-icon" aria-label="Notifications">🔔</button>
+          <button class="header-icon" aria-label="Messages">💬</button>
+
+          <div class="token-display">
+            <span aria-hidden="true">🪙</span>
+            <strong>{{ balance }}</strong>
+          </div>
+
+          <div class="profile-menu" ng-click="toggleProfileMenu()">
+            <div class="profile-picture" aria-hidden="true">A</div>
+            <span class="profile-name">User</span>
+            <span class="arrow" aria-hidden="true">⌄</span>
+
+            <div class="profile-dropdown" ng-show="profileOpen">
+              <div class="profile-info">
+                <strong>User</strong>
+                <span>abc@example.com</span>
+              </div>
+              <hr />
+              <a href="profile.html">👤 My Profile</a>
+              <a href="settings.html">⚙ Settings</a>
+              <a href="#" ng-click="logout()">↪ Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= SIDEBAR ================= -->
+      <aside class="sidebar" ng-class="{'sidebar-open': sidebarOpen}">
+        <nav>
+          <a href="firstLogin.html" class="nav-item">
+            <span>🏠</span><span>Home</span>
+          </a>
+          <a href="learnSkills.html" class="nav-item">
+            <span>📚</span><span>Learn Skills</span>
+          </a>
+          <a href="teachSkills.html" class="nav-item">
+            <span>🎓</span><span>Teach Skills</span>
+          </a>
+          <a href="findTeam.html" class="nav-item">
+            <span>👥</span><span>Find Teammates</span>
+          </a>
+          <a href="profile.html" class="nav-item">
+            <span>👤</span><span>My Profile</span>
+          </a>
+
+          <div class="nav-submenu">
+            <a href="achievements.html">🏆 Achievements</a>
+            <a href="wallet.html" class="active">🪙 Skill Wallet</a>
+            <a href="projects.html">📂 My Projects</a>
+            <a href="buildResume.html">📄 Build Resume</a>
+          </div>
+
+          <a href="settings.html" class="nav-item">
+            <span>⚙</span><span>Settings</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- ================= PAGE CONTENT ================= -->
+      <main class="main-content">
+
+        <!-- 1. PAGE HEADER -->
+        <section class="page-header">
+          <h1><span aria-hidden="true">🪙</span> Skill Wallet</h1>
+          <p>Track, earn and spend Skill Tokens while learning and teaching.</p>
+        </section>
+
+        <!-- 2. BALANCE HERO -->
+        <section class="wallet-hero">
+          <div class="hero-left">
+            <span class="hero-label">Available Balance</span>
+            <div class="hero-balance">
+              <span class="coin" aria-hidden="true">🪙</span>
+              <strong ng-bind="balance"></strong>
+              <span class="unit">ST</span>
+            </div>
+            <p class="hero-sub">Skill Tokens you can use to learn new skills</p>
+          </div>
+
+          <div class="hero-actions">
+            <a href="teachSkills.html" class="hero-btn primary">
+              <span aria-hidden="true">🎓</span> Earn Tokens
+            </a>
+            <a href="learnSkills.html" class="hero-btn outline">
+              <span aria-hidden="true">📚</span> Spend Tokens
+            </a>
+          </div>
+        </section>
+
+        <!-- 3. STATS CARDS -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon earned" aria-hidden="true">⬆️</div>
+            <div>
+              <div class="stat-value" ng-bind="totalEarned"></div>
+              <div class="stat-label">Total Earned</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon spent" aria-hidden="true">⬇️</div>
+            <div>
+              <div class="stat-value" ng-bind="totalSpent"></div>
+              <div class="stat-label">Total Spent</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon balance" aria-hidden="true">💰</div>
+            <div>
+              <div class="stat-value" ng-bind="balance"></div>
+              <div class="stat-label">Current Balance</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. TRANSACTION HISTORY -->
+        <section class="wallet-section">
+          <div class="section-head">
+            <h2 class="section-title">
+              <span aria-hidden="true">📋</span> Transaction History
+            </h2>
+
+            <div class="tx-filters">
+              <button
+                class="tx-filter"
+                ng-repeat="f in txFilters"
+                ng-class="{ active: selectedTxFilter === f }"
+                ng-click="setTxFilter(f)"
+              >
+                {{ f }}
+              </button>
+            </div>
+          </div>
+
+          <div class="tx-list" ng-if="filteredTransactions().length">
+            <article
+              class="tx-row"
+              ng-repeat="tx in filteredTransactions() | orderBy:'-date'"
+            >
+              <div class="tx-icon" ng-class="tx.type">
+                <span ng-if="tx.type === 'earn'">⬆️</span>
+                <span ng-if="tx.type === 'spend'">⬇️</span>
+              </div>
+
+              <div class="tx-body">
+                <div class="tx-title" ng-bind="tx.title"></div>
+                <div class="tx-meta">
+                  <span ng-bind="tx.category"></span>
+                  ·
+                  <span ng-bind="tx.date"></span>
+                </div>
+              </div>
+
+              <div class="tx-amount" ng-class="tx.type">
+                <span ng-if="tx.type === 'earn'">+</span>
+                <span ng-if="tx.type === 'spend'">−</span>
+                {{ tx.amount }} ST
+              </div>
+            </article>
+          </div>
+
+          <div class="empty-state" ng-if="!filteredTransactions().length">
+            <span class="empty-icon" aria-hidden="true">📭</span>
+            <h3>No transactions yet</h3>
+            <p>Start teaching or learning to see your token activity here.</p>
+          </div>
+        </section>
+
+        <!-- 5. EARN + SPEND (side by side on desktop) -->
+        <section class="earn-spend-grid">
+
+          <!-- Earn Tokens -->
+          <div class="panel">
+            <h2 class="section-title">
+              <span aria-hidden="true">🎓</span> Earn Tokens
+            </h2>
+            <p class="panel-desc">Teach skills and complete tasks to earn more ST.</p>
+
+            <div class="task-list">
+              <div class="task-card" ng-repeat="task in earnTasks">
+                <div class="task-icon" aria-hidden="true" ng-bind="task.icon"></div>
+                <div class="task-body">
+                  <div class="task-title" ng-bind="task.title"></div>
+                  <div class="task-desc" ng-bind="task.description"></div>
+                </div>
+                <div class="task-reward">+{{ task.reward }} ST</div>
+              </div>
+            </div>
+
+            <a href="teachSkills.html" class="panel-btn">
+              Go to Teach Skills →
+            </a>
+          </div>
+
+          <!-- Spend Tokens -->
+          <div class="panel">
+            <h2 class="section-title">
+              <span aria-hidden="true">📚</span> Spend Tokens
+            </h2>
+            <p class="panel-desc">Use your tokens to unlock learning sessions.</p>
+
+            <div class="task-list">
+              <div class="task-card" ng-repeat="item in spendOptions">
+                <div class="task-icon" aria-hidden="true" ng-bind="item.icon"></div>
+                <div class="task-body">
+                  <div class="task-title" ng-bind="item.title"></div>
+                  <div class="task-desc" ng-bind="item.description"></div>
+                </div>
+                <div class="task-cost">{{ item.cost }} ST</div>
+              </div>
+            </div>
+
+            <a href="learnSkills.html" class="panel-btn">
+              Go to Learn Skills →
+            </a>
+          </div>
+        </section>
+
+        <!-- 6. TOKEN RULES -->
+        <section class="rules-card">
+          <h2 class="section-title">
+            <span aria-hidden="true">ℹ️</span> How Skill Tokens Work
+          </h2>
+
+          <div class="rules-grid">
+            <div class="rule">
+              <span class="rule-num">1</span>
+              <div>
+                <strong>Earn by teaching</strong>
+                <p>Share your skills with others and receive ST for every successful session.</p>
+              </div>
+            </div>
+            <div class="rule">
+              <span class="rule-num">2</span>
+              <div>
+                <strong>Spend to learn</strong>
+                <p>Use tokens to unlock learning sessions and access premium skill content.</p>
+              </div>
+            </div>
+            <div class="rule">
+              <span class="rule-num">3</span>
+              <div>
+                <strong>No expiry</strong>
+                <p>Your tokens never expire. Save them or spend them whenever you want.</p>
+              </div>
+            </div>
+            <div class="rule">
+              <span class="rule-num">4</span>
+              <div>
+                <strong>Fair exchange</strong>
+                <p>Token amounts are based on skill level, session length and community value.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="Controllers/walletController.js"></script>
+  </body>
+</html>

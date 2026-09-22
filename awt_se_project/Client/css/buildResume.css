@@ -1,0 +1,1087 @@
+
+:root {
+  /* ===== Colour Palette (aligned with dashboard) ===== */
+  --primary: #395176;
+  --primary-dark: #2c3e5a;
+  --primary-light: #bdb0ca;
+  --accent: #90b1cf;
+  --muted: #9295b7;
+
+  --text: #1e293b;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+
+  --gradient-color-1: #E8F0FE;
+  --gradient-color-2: #EEF2F9;
+  --gradient-color-3: #F0E9F7;
+  --gradient-color-4: #ffffff;
+
+  --bg: linear-gradient(
+    135deg,
+    var(--gradient-color-1) 8%,
+    var(--gradient-color-2) 40%,
+    var(--gradient-color-3) 100%
+  );
+
+  --white: #ffffff;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --surface: #f1f5f9;
+  --surface-hover: #e2e8f0;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-md: var(--radius);
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-xs: 0 1px 2px rgba(30, 41, 59, 0.04);
+  --shadow-sm: 0 4px 12px rgba(57, 81, 118, 0.08);
+  --shadow-md: 0 10px 24px rgba(57, 81, 118, 0.1);
+  --shadow-lg: 0 20px 40px rgba(57, 81, 118, 0.14);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.18s var(--ease);
+  --transition-base: 0.25s var(--ease);
+  --transition-slow: 0.45s var(--ease);
+}
+
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ============================================================
+   PAGE LAYOUT
+   Header + Sidebar are already defined in home.css
+   ============================================================ */
+
+.dashboard .main-content {
+  grid-area: main;
+  padding: var(--space-8) var(--space-8) var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dashboard .main-content.profile-main {
+  max-width: 1400px;
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.dashboard a:focus-visible,
+.dashboard button:focus-visible,
+.dashboard input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+
+/* ============================================================
+   PAGE TITLE / ACTIONS
+   ============================================================ */
+
+.profile-page-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+.page-title-block .section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+
+.page-title-block h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-dark);
+  margin: 0 0 var(--space-1);
+  line-height: 1.25;
+}
+
+.page-title-block p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+
+/* ============================================================
+   PROFILE LAYOUT
+   ============================================================ */
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.profile-sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.profile-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-bottom: 20px;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+}
+
+.photo-wrapper {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 3px solid #e0e7ff;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+}
+
+.photo-wrapper:hover {
+  border-color: var(--accent);
+  transform: scale(1.03);
+}
+
+.photo-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.25s;
+  font-size: 0.85rem;
+}
+
+.photo-wrapper:hover .photo-overlay {
+  opacity: 1;
+}
+
+.profile-card h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.bio-preview {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+
+/* ============================================================
+   PROFILE COMPLETION
+   ============================================================ */
+
+.completion {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.completion-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #395176, #90b1cf);
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+
+
+/* ============================================================
+   PROFILE SIDE NAV
+   ============================================================ */
+
+.side-nav a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  transition: 0.2s;
+  position: relative;
+  padding-left: 16px;
+}
+
+.side-nav a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: height 0.2s ease;
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+  background: #eef2ff;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.side-nav a:hover::before,
+.side-nav a.active::before {
+  height: 60%;
+}
+
+
+/* ============================================================
+   CARDS / FORMS
+   ============================================================ */
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3,
+.card > h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: 0.2s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #b3b8c9;
+}
+
+.form-group input.invalid,
+.form-group textarea.invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+
+/* ============================================================
+   DYNAMIC ITEMS
+   ============================================================ */
+
+.dynamic-item {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dynamic-item:hover {
+  border-color: var(--primary-light);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.item-detail {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+
+.skill-category {
+  background: #fbfcfe;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.skill-category:hover {
+  border-color: var(--primary-light);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.skill-category:last-child {
+  margin-bottom: 0;
+}
+
+.skill-category > label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--primary-dark);
+  margin-bottom: 12px;
+}
+
+.skill-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.skill-input-row input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.skill-input-row input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.15);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tag.soft {
+  background: #fce7f3;
+  color: #9d174d;
+}
+
+.tag.tools {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: inherit;
+  opacity: 0.7;
+  border-radius: 50%;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.tag button:hover {
+  opacity: 1;
+  color: #b91c1c;
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn-primary,
+.btn-outline,
+.btn-add,
+.btn-add-sm,
+.btn-remove,
+.btn-danger {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 10px 20px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-add {
+  background: #eef2ff;
+  color: var(--primary);
+  padding: 8px 14px;
+  font-size: 0.9rem;
+}
+
+.btn-add-sm {
+  background: var(--primary);
+  color: white;
+  padding: 10px 16px;
+}
+
+.btn-remove {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+.btn-remove:hover {
+  background: #fecaca;
+}
+
+.btn-danger {
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 10px 18px;
+}
+
+.btn-danger:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:active,
+.btn-outline:active,
+.btn-add:active,
+.btn-add-sm:active,
+.btn-remove:active,
+.btn-danger:active {
+  transform: scale(0.97);
+}
+
+.bottom-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  margin-bottom: 40px;
+}
+
+
+/* ============================================================
+   MODAL + RESUME
+   ============================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop 0.25s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.modal-header h3 {
+  font-weight: 700;
+  margin-right: auto;
+}
+
+.template-selector button {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.template-selector button.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.btn-close {
+  background: #f1f5f9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.btn-close:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.modal-body {
+  overflow-y: auto;
+  padding: 24px;
+  background: #f1f5f9;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.resume {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 18mm;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  font-size: 10.5pt;
+}
+
+.resume h1 {
+  font-size: 22pt;
+  margin-bottom: 4px;
+}
+
+.resume h2 {
+  font-size: 12pt;
+  color: var(--primary);
+  border-bottom: 1.5px solid #e2e8f0;
+  padding-bottom: 4px;
+  margin: 16px 0 8px;
+}
+
+.resume-section {
+  margin-bottom: 6px;
+}
+
+.item-title {
+  font-weight: 600;
+}
+
+.item-sub {
+  color: #64748b;
+  font-size: 9.5pt;
+  margin-bottom: 2px;
+}
+
+
+/* ============================================================
+   RESUME PDF
+   ============================================================ */
+
+#resume-paper {
+  width: 210mm !important;
+  min-height: 297mm !important;
+  padding: 15mm 18mm !important;
+  background: white !important;
+  color: #111 !important;
+  font-family: "Inter", Arial, sans-serif !important;
+  box-shadow: none !important;
+  margin: 0 auto;
+}
+
+#resume-paper * {
+  box-sizing: border-box;
+}
+
+#resume-paper h1 {
+  font-size: 22pt !important;
+  margin-bottom: 4px !important;
+  color: #111 !important;
+}
+
+#resume-paper h2 {
+  font-size: 12.5pt !important;
+  color: #1e40af !important;
+  border-bottom: 1.5px solid #cbd5e1 !important;
+  padding-bottom: 3px !important;
+  margin: 14px 0 6px 0 !important;
+  page-break-after: avoid;
+}
+
+#resume-paper .resume-section {
+  margin-bottom: 10px;
+  page-break-inside: avoid;
+}
+
+#resume-paper p,
+#resume-paper .item-sub,
+#resume-paper li {
+  font-size: 10pt !important;
+  line-height: 1.4 !important;
+  color: #222 !important;
+}
+
+#resume-paper .item-title {
+  font-weight: 600 !important;
+  font-size: 10.5pt !important;
+}
+
+#resume-paper a {
+  color: #1e40af !important;
+  text-decoration: none !important;
+}
+
+#resume-paper button,
+#resume-paper .modal-actions,
+#resume-paper .template-selector {
+  display: none !important;
+}
+
+
+/* ============================================================
+   RESUME TEMPLATES
+   ============================================================ */
+
+.resume-header.modern {
+  text-align: center;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.resume-header.modern h1 {
+  color: var(--primary-dark);
+}
+
+.resume-header.modern .title {
+  color: var(--muted);
+  font-size: 10.5pt;
+  margin-bottom: 8px;
+}
+
+.resume-header.modern .contact {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 9.5pt;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.resume-header.modern .contact span:not(:last-child)::after {
+  content: "•";
+  margin-left: 10px;
+  color: #cbd5e1;
+}
+
+.resume-header.modern .links {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.resume-header.modern .links a {
+  color: var(--primary);
+  font-size: 9.5pt;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.resume-header.modern .links a:hover {
+  text-decoration: underline;
+}
+
+
+/* Minimal */
+
+.resume.minimal .resume-header {
+  margin-bottom: 14px;
+}
+
+.resume.minimal .resume-header h1 {
+  font-size: 20pt;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.resume.minimal .resume-header p {
+  font-size: 9.5pt;
+  color: #64748b;
+}
+
+.resume.minimal h2 {
+  font-size: 10.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.resume.minimal .resume-section {
+  margin-bottom: 12px;
+}
+
+
+/* Professional */
+
+.resume.professional {
+  border-top: 6px solid var(--primary-dark);
+}
+
+.resume.professional .resume-header h1 {
+  color: var(--primary-dark);
+  font-size: 21pt;
+}
+
+.resume.professional .resume-header p {
+  font-size: 9.5pt;
+  color: #475569;
+}
+
+.resume.professional h2 {
+  background: #f1f5f9;
+  color: var(--primary-dark);
+  padding: 5px 10px;
+  border-bottom: none;
+  border-radius: 4px;
+  font-size: 10.5pt;
+}
+
+.resume.professional .resume-section {
+  margin-bottom: 12px;
+}
+
+
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   Only page/profile/resume responsive styles remain here.
+   Header + Sidebar responsive styles are in home.css.
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+  .dashboard .main-content {
+    padding: var(--space-7) var(--space-6) var(--space-9);
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .dashboard .main-content {
+    padding: var(--space-6) var(--space-4) var(--space-8);
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    position: static;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .profile-page-actions {
+    flex-direction: column;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .page-title-block h1 {
+    font-size: 1.4rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .resume {
+    width: 100%;
+    padding: 6mm;
+  }
+
+  .bottom-actions {
+    flex-direction: column-reverse;
+  }
+
+  .bottom-actions .btn-primary,
+  .bottom-actions .btn-outline {
+    width: 100%;
+    text-align: center;
+  }
+
+}
