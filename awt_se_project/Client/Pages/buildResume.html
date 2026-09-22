@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en" ng-app="skillSyncApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Build Resume | SkillSync</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/buildResume.css" />
+    
+    
+    <link rel="stylesheet" href="../css/mobile.css" />
+    <link rel="stylesheet" href="../css/sidebar_header.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  </head>
+  <body ng-controller="ResumeController">
+    <div class="dashboard" ng-class="{'sidebar-open': sidebarOpen}">
+      <!-- ================= HEADER ================= -->
+      <header class="top-header">
+        <div class="header-left">
+          <button
+            class="menu-btn"
+            ng-click="toggleSidebar()"
+            aria-label="Toggle navigation menu"
+          >
+            ☰
+          </button>
+          <div class="logo">
+            <img src="images/logo.png" alt="SkillSync Logo" class="logo-icon" />
+            𝗌𝗄𝗂𝗅𝗅𝗌𝗒𝗇𝖼
+          </div>
+        </div>
+
+        <div class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input
+            type="text"
+            placeholder="Search skills, students..."
+            ng-model="searchText"
+            aria-label="Search skills and students"
+          />
+        </div>
+
+        <div class="header-right">
+          <button class="header-icon" aria-label="Notifications">🔔</button>
+          <button class="header-icon" aria-label="Messages">💬</button>
+
+          <div class="token-display">
+            <span aria-hidden="true">🪙</span>
+            <strong>{{ tokens }}</strong>
+          </div>
+
+          <div class="profile-menu" ng-click="toggleProfileMenu()">
+            <div class="profile-picture" aria-hidden="true">
+              {{ (profile.personalInfo.fullName || 'A').charAt(0).toUpperCase()
+              }}
+            </div>
+            <span class="profile-name"
+              >{{ profile.personalInfo.fullName ?
+              profile.personalInfo.fullName.split(' ')[0] : 'User' }}</span
+            >
+            <span class="arrow" aria-hidden="true">⌄</span>
+
+            <div
+              class="profile-dropdown"
+              ng-show="profileOpen"
+              ng-click="$event.stopPropagation()"
+            >
+              <div class="profile-info">
+                <strong
+                  >{{ profile.personalInfo.fullName || 'Your Name' }}</strong
+                >
+                <span
+                  >{{ profile.personalInfo.email || 'email@example.com' }}</span
+                >
+              </div>
+              <hr />
+              <a href="profile.html">👤 My Profile</a>
+              <a href="settings.html">⚙ Settings</a>
+              <a href="#" ng-click="logout()">↪ Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= SIDEBAR ================= -->
+      <aside class="sidebar" ng-class="{'sidebar-open': sidebarOpen}">
+        <nav>
+          <a href="firstLogin.html" class="nav-item">
+            <span>🏠</span>
+            <span>Home</span>
+          </a>
+          <a href="learnSkills.html" class="nav-item">
+            <span>📚</span>
+            <span>Learn Skills</span>
+          </a>
+          <a href="teachSkills.html" class="nav-item">
+            <span>🎓</span>
+            <span>Teach Skills</span>
+          </a>
+          <a href="findTeam.html" class="nav-item">
+            <span>👥</span>
+            <span>Find Teammates</span>
+          </a>
+          <a href="profile.html" class="nav-item active">
+            <span>👤</span>
+            <span>My Profile</span>
+          </a>
+          <div class="nav-submenu">
+            <a href="achievements.html">🏆 Achievements</a>
+            <a href="wallet.html">🪙 Skill Wallet</a>
+            <a href="projects.html">📂 My Projects</a>
+            <a href="buildResume.html" class="active-sub">📄 Build Resume</a>
+          </div>
+          <a href="settings.html" class="nav-item">
+            <span>⚙</span>
+            <span>Settings</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- ================= MAIN CONTENT ================= -->
+      <main class="main-content profile-main">
+        <div class="profile-page-actions">
+          <div class="page-title-block">
+            <span class="section-label">PROFILE</span>
+            <h1>Build Your Resume</h1>
+            <p>Keep your profile up to date and generate a polished resume.</p>
+          </div>
+          <div class="nav-actions">
+            <button class="btn-outline" ng-click="previewResume()">
+              Preview Resume
+            </button>
+            <button
+              class="btn-primary"
+              ng-click="saveResume()"
+              ng-disabled="saving"
+            >
+              {{ saving ? 'Saving...' : 'Save Resume' }}
+            </button>
+            <button class="btn-danger" ng-click="clearResume()">
+              Clear Resume
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-layout">
+          <!-- Inner profile card + section nav -->
+          <aside class="profile-sidebar">
+            <div class="profile-card">
+              <div class="photo-wrapper" ng-click="triggerPhotoUpload()">
+                <img
+                  ng-src="{{ resume.personalInfo.photo || 'https://via.placeholder.com/120' }}"
+                  alt="Profile"
+                />
+                <div class="photo-overlay">Change</div>
+              </div>
+              <input
+                type="file"
+                id="photoInput"
+                accept="image/*"
+                style="display: none"
+                onchange="angular.element(this).scope().uploadPhoto(event)"
+              />
+              <h2>{{ resume.personalInfo.fullName || 'Your Name' }}</h2>
+              <p class="bio-preview">
+                {{ resume.personalInfo.bio || 'Add a short bio...' }}
+              </p>
+              <div class="completion">
+                <div class="completion-header">
+                  <span>Profile Completion</span>
+                  <strong>{{ completion }}%</strong>
+                </div>
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    ng-style="{ width: completion + '%' }"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <nav class="side-nav">
+              <a
+                href="#"
+                ng-click="scrollTo('personal'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'personal' }"
+              >
+                Personal Info
+              </a>
+              <a
+                href="#"
+                ng-click="scrollTo('education'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'education' }"
+              >
+                Education
+              </a>
+              <a
+                href="#"
+                ng-click="scrollTo('skills'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'skills' }"
+              >
+                Skills
+              </a>
+              <a
+                href="#"
+                ng-click="scrollTo('experience'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'experience' }"
+              >
+                Experience
+              </a>
+              <a
+                href="#"
+                ng-click="scrollTo('projects'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'projects' }"
+              >
+                Projects
+              </a>
+              <a
+                href="#"
+                ng-click="scrollTo('certifications'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'certifications' }"
+              >
+                Certifications
+              </a>
+              <a
+                href="#"
+                ng-click="scrollTo('achievements'); $event.preventDefault()"
+                ng-class="{ active: activeSection === 'achievements' }"
+              >
+                Achievements
+              </a>
+            </nav>
+          </aside>
+
+          <!-- Form content -->
+          <div class="profile-form-area">
+            <!-- Personal Info -->
+            <section id="personal" class="card">
+              <h3>Personal Information</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Full Name *</label>
+                  <input
+                    type="text"
+                    ng-model="resume.personalInfo.fullName"
+                    placeholder="ABC"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Email *</label>
+                  <input
+                    type="email"
+                    ng-model="resume.personalInfo.email"
+                    placeholder="abc@example.com"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input
+                    type="text"
+                    ng-model="resume.personalInfo.phone"
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Location</label>
+                  <input
+                    type="text"
+                    ng-model="resume.personalInfo.location"
+                    placeholder="Ahmedabad, India"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>LinkedIn</label>
+                  <input
+                    type="url"
+                    ng-model="resume.personalInfo.linkedin"
+                    placeholder="https://linkedin.com/in/..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label>GitHub</label>
+                  <input
+                    type="url"
+                    ng-model="resume.personalInfo.github"
+                    placeholder="https://github.com/..."
+                  />
+                </div>
+                <div class="form-group full">
+                  <label>Short Bio</label>
+                  <textarea
+                    ng-model="resume.personalInfo.bio"
+                    rows="3"
+                    placeholder="Computer Engineering student passionate about..."
+                  ></textarea>
+                </div>
+              </div>
+            </section>
+
+            <!-- Education -->
+            <section id="education" class="card">
+              <div class="section-header">
+                <h3>Education</h3>
+                <button class="btn-add" ng-click="addEducation()">
+                  + Add Education
+                </button>
+              </div>
+              <div
+                class="dynamic-item"
+                ng-repeat="edu in resume.education track by $index"
+              >
+                <div class="item-header">
+                  <strong>Education {{ $index + 1 }}</strong>
+                  <button class="btn-remove" ng-click="removeEducation($index)">
+                    Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Degree</label>
+                    <input
+                      type="text"
+                      ng-model="edu.degree"
+                      placeholder="B.Tech Computer Engineering"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>College / University</label>
+                    <input
+                      type="text"
+                      ng-model="edu.college"
+                      placeholder="Your College Name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Year</label>
+                    <input
+                      type="text"
+                      ng-model="edu.year"
+                      placeholder="2024 – 2028"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>CGPA / Percentage</label>
+                    <input
+                      type="text"
+                      ng-model="edu.score"
+                      placeholder="8.5 CGPA"
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Skills -->
+            <section id="skills" class="card">
+              <h3>Skills</h3>
+              <div class="skill-category">
+                <label>Technical Skills</label>
+                <div class="skill-input-row">
+                  <input
+                    type="text"
+                    ng-model="newSkill.technical"
+                    placeholder="e.g. Python"
+                    ng-keypress="$event.keyCode === 13 && addSkill('technical')"
+                  />
+                  <button class="btn-add-sm" ng-click="addSkill('technical')">
+                    Add
+                  </button>
+                </div>
+                <div class="skill-tags">
+                  <span
+                    class="tag"
+                    ng-repeat="s in resume.skills.technical track by $index"
+                  >
+                    {{ s }}
+                    <button ng-click="removeSkill('technical', $index)">
+                      ×
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="skill-category">
+                <label>Soft Skills</label>
+                <div class="skill-input-row">
+                  <input
+                    type="text"
+                    ng-model="newSkill.soft"
+                    placeholder="e.g. Leadership"
+                    ng-keypress="$event.keyCode === 13 && addSkill('soft')"
+                  />
+                  <button class="btn-add-sm" ng-click="addSkill('soft')">
+                    Add
+                  </button>
+                </div>
+                <div class="skill-tags">
+                  <span
+                    class="tag soft"
+                    ng-repeat="s in resume.skills.soft track by $index"
+                  >
+                    {{ s }}
+                    <button ng-click="removeSkill('soft', $index)">×</button>
+                  </span>
+                </div>
+              </div>
+              <div class="skill-category">
+                <label>Tools & Technologies</label>
+                <div class="skill-input-row">
+                  <input
+                    type="text"
+                    ng-model="newSkill.tools"
+                    placeholder="e.g. MongoDB"
+                    ng-keypress="$event.keyCode === 13 && addSkill('tools')"
+                  />
+                  <button class="btn-add-sm" ng-click="addSkill('tools')">
+                    Add
+                  </button>
+                </div>
+                <div class="skill-tags">
+                  <span
+                    class="tag tools"
+                    ng-repeat="s in resume.skills.tools track by $index"
+                  >
+                    {{ s }}
+                    <button ng-click="removeSkill('tools', $index)">×</button>
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Experience -->
+            <section id="experience" class="card">
+              <div class="section-header">
+                <h3>Experience</h3>
+                <button class="btn-add" ng-click="addExperience()">
+                  + Add Experience
+                </button>
+              </div>
+              <div
+                class="dynamic-item"
+                ng-repeat="exp in resume.experience track by $index"
+              >
+                <div class="item-header">
+                  <strong>Experience {{ $index + 1 }}</strong>
+                  <button
+                    class="btn-remove"
+                    ng-click="removeExperience($index)"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Company</label>
+                    <input
+                      type="text"
+                      ng-model="exp.company"
+                      placeholder="Company Name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Position</label>
+                    <input
+                      type="text"
+                      ng-model="exp.position"
+                      placeholder="Intern / Developer"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Duration</label>
+                    <input
+                      type="text"
+                      ng-model="exp.duration"
+                      placeholder="Jun 2025 – Aug 2025"
+                    />
+                  </div>
+                  <div class="form-group full">
+                    <label>Description</label>
+                    <textarea
+                      ng-model="exp.description"
+                      rows="2"
+                      placeholder="What did you work on..."
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects" class="card">
+              <div class="section-header">
+                <h3>Projects</h3>
+                <button class="btn-add" ng-click="addProject()">
+                  + Add Project
+                </button>
+              </div>
+              <div
+                class="dynamic-item"
+                ng-repeat="proj in resume.projects track by $index"
+              >
+                <div class="item-header">
+                  <strong>Project {{ $index + 1 }}</strong>
+                  <button class="btn-remove" ng-click="removeProject($index)">
+                    Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Project Name</label>
+                    <input
+                      type="text"
+                      ng-model="proj.name"
+                      placeholder="SkillSync"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Technologies</label>
+                    <input
+                      type="text"
+                      ng-model="proj.technologies"
+                      placeholder="HTML, CSS, AngularJS, Node.js"
+                    />
+                  </div>
+                  <div class="form-group full">
+                    <label>Description</label>
+                    <textarea
+                      ng-model="proj.description"
+                      rows="2"
+                      placeholder="Short description of the project..."
+                    ></textarea>
+                  </div>
+                  <div class="form-group full">
+                    <label>Project Link</label>
+                    <input
+                      type="url"
+                      ng-model="proj.link"
+                      placeholder="https://github.com/..."
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Certifications -->
+            <section id="certifications" class="card">
+              <div class="section-header">
+                <h3>Certifications</h3>
+                <button class="btn-add" ng-click="addCertification()">
+                  + Add Certification
+                </button>
+              </div>
+              <div
+                class="dynamic-item"
+                ng-repeat="cert in resume.certifications track by $index"
+              >
+                <div class="item-header">
+                  <strong>Certificate {{ $index + 1 }}</strong>
+                  <button
+                    class="btn-remove"
+                    ng-click="removeCertification($index)"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Certificate Name</label>
+                    <input
+                      type="text"
+                      ng-model="cert.name"
+                      placeholder="AWS Cloud Practitioner"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Organization</label>
+                    <input
+                      type="text"
+                      ng-model="cert.organization"
+                      placeholder="Amazon Web Services"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Date</label>
+                    <input
+                      type="text"
+                      ng-model="cert.date"
+                      placeholder="March 2026"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Certificate Link</label>
+                    <input
+                      type="url"
+                      ng-model="cert.link"
+                      placeholder="https://..."
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Achievements -->
+            <section id="achievements" class="card">
+              <div class="section-header">
+                <h3>Achievements</h3>
+                <button class="btn-add" ng-click="addAchievement()">
+                  + Add Achievement
+                </button>
+              </div>
+              <div
+                class="dynamic-item"
+                ng-repeat="ach in resume.achievements track by $index"
+              >
+                <div class="item-header">
+                  <strong>Achievement {{ $index + 1 }}</strong>
+                  <button
+                    class="btn-remove"
+                    ng-click="removeAchievement($index)"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  ng-model="resume.achievements[$index]"
+                  placeholder="Winner of college hackathon"
+                />
+              </div>
+            </section>
+
+            <div class="bottom-actions">
+              <button class="btn-outline" ng-click="previewResume()">
+                Preview Resume
+              </button>
+              <button
+                class="btn-primary"
+                ng-click="saveProfile()"
+                ng-disabled="saving"
+              >
+                {{ saving ? 'Saving...' : 'Save Profile' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Resume Preview Modal -->
+    <div
+      class="modal-overlay"
+      ng-show="showResume"
+      ng-click="closeResume($event)"
+    >
+      <div class="modal" ng-click="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Resume Preview</h3>
+          <div class="template-selector">
+            <button
+              ng-class="{active: template === 'modern'}"
+              ng-click="template = 'modern'"
+            >
+              Modern
+            </button>
+            <button
+              ng-class="{active: template === 'minimal'}"
+              ng-click="template = 'minimal'"
+            >
+              Minimal
+            </button>
+            <button
+              ng-class="{active: template === 'professional'}"
+              ng-click="template = 'professional'"
+            >
+              Professional
+            </button>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-primary" ng-click="downloadPDF()">
+              Download PDF
+            </button>
+            <button class="btn-close" ng-click="showResume = false">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="resume-paper" class="resume" ng-class="template">
+            <div ng-if="template === 'modern'">
+              <div class="resume-header modern">
+                <h1>{{ resume.personalInfo.fullName || 'Your Name' }}</h1>
+                <p class="title">Computer Engineering Student</p>
+                <div class="contact">
+                  <span ng-if="resume.personalInfo.email"
+                    >{{ resume.personalInfo.email }}</span
+                  >
+                  <span ng-if="resume.personalInfo.phone"
+                    >{{ resume.personalInfo.phone }}</span
+                  >
+                  <span ng-if="resume.personalInfo.location"
+                    >{{ resume.personalInfo.location }}</span
+                  >
+                </div>
+                <div class="links">
+                  <a
+                    ng-if="resume.personalInfo.linkedin"
+                    ng-href="{{ resume.personalInfo.linkedin }}"
+                    >LinkedIn</a
+                  >
+                  <a
+                    ng-if="resume.personalInfo.github"
+                    ng-href="{{ resume.personalInfo.github }}"
+                    >GitHub</a
+                  >
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.personalInfo.bio">
+                <h2>Profile</h2>
+                <p>{{ resume.personalInfo.bio }}</p>
+              </div>
+              <div class="resume-section" ng-if="resume.education.length">
+                <h2>Education</h2>
+                <div ng-repeat="edu in resume.education">
+                  <div class="item-title">{{ edu.degree }}</div>
+                  <div class="item-sub">{{ edu.college }} | {{ edu.year }}</div>
+                  <div class="item-detail" ng-if="edu.score">
+                    {{ edu.score }}
+                  </div>
+                </div>
+              </div>
+              <div
+                class="resume-section"
+                ng-if="resume.skills.technical.length || resume.skills.tools.length"
+              >
+                <h2>Skills</h2>
+                <p ng-if="resume.skills.technical.length">
+                  <strong>Technical:</strong> {{ resume.skills.technical.join('
+                  • ') }}
+                </p>
+                <p ng-if="resume.skills.tools.length">
+                  <strong>Tools:</strong> {{ resume.skills.tools.join(' • ') }}
+                </p>
+                <p ng-if="resume.skills.soft.length">
+                  <strong>Soft Skills:</strong> {{ resume.skills.soft.join(' •
+                  ') }}
+                </p>
+              </div>
+              <div class="resume-section" ng-if="resume.projects.length">
+                <h2>Projects</h2>
+                <div ng-repeat="p in resume.projects">
+                  <div class="item-title">{{ p.name }}</div>
+                  <div class="item-sub" ng-if="p.technologies">
+                    {{ p.technologies }}
+                  </div>
+                  <p>{{ p.description }}</p>
+                  <a ng-if="p.link" ng-href="{{ p.link }}">{{ p.link }}</a>
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.experience.length">
+                <h2>Experience</h2>
+                <div ng-repeat="e in resume.experience">
+                  <div class="item-title">
+                    {{ e.position }} – {{ e.company }}
+                  </div>
+                  <div class="item-sub">{{ e.duration }}</div>
+                  <p>{{ e.description }}</p>
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.certifications.length">
+                <h2>Certifications</h2>
+                <div ng-repeat="c in resume.certifications">
+                  <div class="item-title">{{ c.name }}</div>
+                  <div class="item-sub">
+                    {{ c.organization }} | {{ c.date }}
+                  </div>
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.achievements.length">
+                <h2>Achievements</h2>
+                <ul>
+                  <li ng-repeat="a in resume.achievements">{{ a }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <div ng-if="template === 'minimal' || template === 'professional'">
+              <div class="resume-header">
+                <h1>{{ resume.personalInfo.fullName || 'Your Name' }}</h1>
+                <p>
+                  {{ resume.personalInfo.email }} | {{ resume.personalInfo.phone
+                  }} | {{ resume.personalInfo.location }}
+                </p>
+              </div>
+              <div class="resume-section" ng-if="resume.personalInfo.bio">
+                <h2>Profile</h2>
+                <p>{{ resume.personalInfo.bio }}</p>
+              </div>
+              <div class="resume-section" ng-if="resume.education.length">
+                <h2>Education</h2>
+                <div ng-repeat="edu in resume.education">
+                  <strong>{{ edu.degree }}</strong> – {{ edu.college }} ({{
+                  edu.year }}) {{ edu.score }}
+                </div>
+              </div>
+              <div
+                class="resume-section"
+                ng-if="resume.skills.technical.length"
+              >
+                <h2>Skills</h2>
+                {{ resume.skills.technical.concat(resume.skills.tools).join(' •
+                ') }}
+              </div>
+              <div class="resume-section" ng-if="resume.projects.length">
+                <h2>Projects</h2>
+                <div ng-repeat="p in resume.projects">
+                  <strong>{{ p.name }}</strong> – {{ p.technologies }}<br />
+                  {{ p.description }}
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.experience.length">
+                <h2>Experience</h2>
+                <div ng-repeat="e in resume.experience">
+                  <strong>{{ e.position }}</strong> at {{ e.company }} ({{
+                  e.duration }})<br />
+                  {{ e.description }}
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.certifications.length">
+                <h2>Certifications</h2>
+                <div ng-repeat="c in resume.certifications">
+                  {{ c.name }} – {{ c.organization }} ({{ c.date }})
+                </div>
+              </div>
+              <div class="resume-section" ng-if="resume.achievements.length">
+                <h2>Achievements</h2>
+                <ul>
+                  <li ng-repeat="a in resume.achievements">{{ a }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../Controllers/resumeController.js"></script>
+  </body>
+</html>
