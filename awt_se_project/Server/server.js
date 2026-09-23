@@ -50,7 +50,10 @@ app.get("/profile", (req, res) => {
   res.sendFile(path.join(__dirname, "../Client/Pages/buildResume.html"));
 });
 
-
+// Optional: dashboard (after login)
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, "../Client/Pages/firstLogin.html"));
+});
 
 // ======================
 // CATCH-ALL FOR ANY PAGE UNDER Client/Pages
@@ -79,5 +82,5 @@ app.listen(PORT, () => {
   console.log(`✅ SkillSync Server is running`);
   console.log(`🌐 http://localhost:${PORT}`);
   console.log(`📄 Profile  → http://localhost:${PORT}/profile`);
-  
+  console.log(`🏠 Dashboard → http://localhost:${PORT}/home`);
 });
