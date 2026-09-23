@@ -1,0 +1,1608 @@
+/* ============================================================
+   SkillSync – Settings Page
+   Clean • Responsive • Properly Aligned
+   ============================================================ */
+
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+
+:root {
+    --primary: #395176;
+    --primary-dark: #2c3e5a;
+    --primary-light: #bdb0ca;
+    --accent: #90b1cf;
+
+    --muted: #9295b7;
+
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+
+    --white: #ffffff;
+    --page-bg: #f8fafc;
+
+    --border: rgba(57, 81, 118, 0.12);
+    --border-light: rgba(57, 81, 118, 0.08);
+
+    --danger: #dc2626;
+    --danger-dark: #b91c1c;
+    --danger-bg: #fef2f2;
+
+    --radius: 16px;
+    --small-radius: 10px;
+
+    --shadow-sm:
+        0 2px 8px rgba(57, 81, 118, 0.05);
+
+    --shadow:
+        0 5px 18px rgba(57, 81, 118, 0.07);
+}
+
+
+/* ============================================================
+   MAIN SETTINGS PAGE
+   ============================================================ */
+
+.settings-page {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 30px 30px 60px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.settings-header {
+
+    margin-bottom: 26px;
+}
+
+.settings-header h1 {
+
+    margin: 0;
+
+    font-size: 30px;
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    color: var(--text-dark);
+}
+
+.settings-subtitle {
+
+    margin: 7px 0 0;
+
+    max-width: 750px;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: var(--text-muted);
+}
+
+
+/* ============================================================
+   MAIN TWO-COLUMN LAYOUT
+   ============================================================ */
+
+.settings-layout {
+    display: grid;
+    grid-template-columns: 235px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;        /* keep this */
+    width: 100%;
+}
+
+
+/* ============================================================
+   LEFT SETTINGS NAVIGATION – stays fixed while scrolling
+   ============================================================ */
+
+.settings-nav {
+    position: sticky;
+    top: 90px;                 /* adjust this value to match your header height */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-self: start;         /* important for grid */
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+/* Navigation buttons */
+
+.settings-nav-item {
+
+    width: 100%;
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 13px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: transparent;
+
+    color: var(--text-muted);
+
+    font-family: inherit;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.settings-nav-item i {
+
+    width: 19px;
+
+    flex-shrink: 0;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+
+/* Hover */
+
+.settings-nav-item:hover {
+
+    background: rgba(57, 81, 118, 0.06);
+
+    color: var(--primary);
+}
+
+
+/* Active */
+
+.settings-nav-item.active {
+
+    background: var(--primary);
+
+    color: var(--white);
+
+    box-shadow:
+        0 4px 10px rgba(57, 81, 118, 0.16);
+}
+
+.settings-nav-item.active:hover {
+
+    background: var(--primary-dark);
+
+    color: var(--white);
+}
+
+
+/* ============================================================
+   RIGHT CONTENT
+   ============================================================ */
+
+.settings-content {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 34px;
+}
+
+
+/* Individual section */
+
+.settings-section {
+
+    width: 100%;
+
+    scroll-margin-top: 30px;
+}
+
+
+/* Section heading */
+
+.section-title {
+
+    margin: 0 0 12px;
+
+    font-size: 20px;
+    line-height: 1.35;
+
+    font-weight: 600;
+
+    color: var(--text-dark);
+}
+
+
+/* ============================================================
+   SETTINGS CARD
+   ============================================================ */
+
+.settings-card {
+
+    width: 100%;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   SETTING ITEM
+   ============================================================ */
+
+.setting-item {
+
+    width: 100%;
+
+    min-height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 17px 20px;
+
+    box-sizing: border-box;
+
+    border-bottom: 1px solid var(--border-light);
+
+    transition:
+        background 0.18s ease;
+}
+
+.setting-item:last-child {
+
+    border-bottom: none;
+}
+
+
+/* Hover */
+
+.setting-item:hover {
+
+    background: rgba(57, 81, 118, 0.025);
+}
+
+
+/* Vertical setting */
+
+.setting-item.vertical {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+}
+
+
+/* ============================================================
+   SETTING INFORMATION
+   ============================================================ */
+
+.setting-info {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    flex: 1;
+}
+
+
+/* ============================================================
+   ICON BOXES – forced clean style
+   ============================================================ */
+
+.setting-icon {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex-shrink: 0 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #eef1f5 !important;
+    border-radius: 12px !important;
+    color: #395176 !important;
+
+    font-size: 17px !important;
+    line-height: 1 !important;
+}
+
+/* Delete Account (red) */
+.setting-item.danger .setting-icon,
+.danger-icon {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
+}
+
+/* Heading */
+
+.setting-info h3 {
+
+    margin: 1px 0 4px;
+
+    font-size: 15px;
+
+    line-height: 1.35;
+
+    font-weight: 600;
+
+    color: var(--text-dark);
+}
+
+
+/* Description */
+
+.setting-info p {
+
+    margin: 0;
+
+    max-width: 650px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    color: var(--text-muted);
+}
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.setting-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.setting-info h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.setting-info p {
+    margin: 0;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.5;
+
+    /* Important */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+
+    min-height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 8px 15px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    border: none;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Primary */
+
+.btn-primary {
+
+    background: var(--primary);
+
+    color: var(--white);
+
+    border: 1px solid var(--primary);
+}
+
+.btn-primary:hover {
+
+    background: var(--primary-dark);
+
+    border-color: var(--primary-dark);
+
+    box-shadow:
+        0 4px 10px rgba(57, 81, 118, 0.15);
+}
+
+
+/* Outline */
+
+.btn-outline {
+
+    background: var(--white);
+
+    color: var(--primary);
+
+    border: 1px solid rgba(57, 81, 118, 0.25);
+}
+
+.btn-outline:hover {
+
+    background: rgba(57, 81, 118, 0.06);
+
+    border-color: var(--primary);
+}
+
+
+/* Danger */
+
+.btn-danger {
+
+    background: var(--danger);
+
+    color: var(--white);
+
+    border: 1px solid var(--danger);
+}
+
+.btn-danger:hover {
+
+    background: var(--danger-dark);
+
+    border-color: var(--danger-dark);
+}
+
+
+/* ============================================================
+   FORM SELECT
+   ============================================================ */
+
+.form-select {
+
+    width: auto;
+
+    min-width: 170px;
+
+    height: 40px;
+
+    padding: 0 35px 0 12px;
+
+    border: 1px solid rgba(57, 81, 118, 0.2);
+
+    border-radius: 10px;
+
+    background-color: var(--white);
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.form-select:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(57, 81, 118, 0.08);
+}
+
+
+/* ============================================================
+   TOGGLE SWITCH
+   ============================================================ */
+
+.toggle {
+
+    position: relative;
+
+    width: 46px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    display: inline-block;
+}
+
+
+/* Hide checkbox */
+
+.toggle input {
+
+    position: absolute;
+
+    opacity: 0;
+
+    width: 0;
+    height: 0;
+}
+
+
+/* Track */
+
+.toggle-slider {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #cbd5e1;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    transition: background 0.25s ease;
+}
+
+
+/* Circle */
+
+.toggle-slider::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    left: 3px;
+    top: 3px;
+
+    background: var(--white);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.18);
+
+    transition: transform 0.25s ease;
+}
+
+
+/* Checked */
+
+.toggle input:checked + .toggle-slider {
+
+    background: var(--primary);
+}
+
+.toggle input:checked + .toggle-slider::before {
+
+    transform: translateX(20px);
+}
+
+
+/* ============================================================
+   RADIO GROUP
+   ============================================================ */
+
+.radio-group {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 3px;
+}
+
+
+/* Radio option */
+
+.radio-card {
+
+    display: block;
+
+    cursor: pointer;
+}
+
+
+/* Hide radio */
+
+.radio-card input {
+
+    display: none;
+}
+
+
+/* Radio content */
+
+.radio-card span {
+
+    min-height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 12px;
+
+    box-sizing: border-box;
+
+    border: 1.5px solid rgba(57, 81, 118, 0.15);
+
+    border-radius: 11px;
+
+    background: #f8fafc;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Checked */
+
+.radio-card input:checked + span {
+
+    border-color: var(--primary);
+
+    background: rgba(57, 81, 118, 0.08);
+
+    color: var(--primary);
+
+    box-shadow:
+        0 0 0 1px var(--primary);
+}
+
+
+/* ============================================================
+   THEME SELECTOR
+   ============================================================ */
+
+.theme-selector {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+    background: var(--bg);
+}
+
+
+/* Theme option */
+
+.theme-option {
+
+    display: block;
+
+    cursor: pointer;
+}
+
+
+/* Hide radio */
+
+.theme-option input {
+
+    display: none;
+}
+
+
+/* Theme card */
+
+.theme-card {
+
+    min-height: 110px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    border: 1.5px solid rgba(57, 81, 118, 0.15);
+
+    border-radius: 12px;
+
+    background: #f8fafc;
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.theme-card i {
+
+    font-size: 21px;
+
+    color: var(--primary);
+}
+
+
+/* Selected */
+
+.theme-option input:checked + .theme-card {
+
+    border-color: var(--primary);
+
+    background: rgba(57, 81, 118, 0.08);
+
+    color: var(--primary);
+
+    box-shadow:
+        0 0 0 1px var(--primary);
+}
+
+
+/* ============================================================
+   TOKEN BALANCE
+   ============================================================ */
+
+.token-balance-card {
+
+    padding: 0;
+}
+
+
+.token-balance {
+
+    min-height: 125px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+}
+
+
+/* Label */
+
+.token-balance .label {
+
+    margin: 0 0 6px;
+
+    font-size: 13px;
+
+    color: var(--text-muted);
+}
+
+
+/* Balance */
+
+.token-balance .balance {
+
+    margin: 0;
+
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: var(--primary);
+}
+
+
+.token-balance .balance span {
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: var(--accent);
+}
+
+
+/* ============================================================
+   CHECKBOX GROUP
+   ============================================================ */
+
+.checkbox-group {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 2px;
+}
+
+
+.checkbox-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: var(--text-dark);
+
+    font-size: 13px;
+
+    line-height: 1.4;
+
+    cursor: pointer;
+}
+
+
+.checkbox-item input {
+
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   MODAL OVERLAY
+   ============================================================ */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 2000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(15, 23, 42, 0.48);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+
+/* AngularJS active state */
+
+.modal-overlay.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* Modal box */
+
+.modal {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    background: var(--white);
+
+    border-radius: var(--radius);
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.2);
+
+    transform: translateY(15px) scale(0.98);
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.modal-overlay.show .modal {
+
+    transform: translateY(0) scale(1);
+}
+
+
+/* Modal heading */
+
+.modal h3 {
+
+    margin: 0 0 8px;
+
+    font-size: 19px;
+
+    line-height: 1.35;
+
+    font-weight: 600;
+
+    color: var(--text-dark);
+}
+
+
+/* Modal text */
+
+.modal p {
+
+    margin: 0 0 18px;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    color: var(--text-muted);
+}
+
+
+/* ============================================================
+   MODAL INPUT
+   ============================================================ */
+
+.form-input {
+
+    width: 100%;
+
+    height: 42px;
+
+    padding: 0 12px;
+
+    margin-bottom: 10px;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(57, 81, 118, 0.2);
+
+    border-radius: 10px;
+
+    background: var(--white);
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.form-input:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(57, 81, 118, 0.08);
+}
+
+
+/* ============================================================
+   MODAL BUTTONS
+   ============================================================ */
+
+.modal-actions {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+
+/* ============================================================
+   LINK ITEMS
+   ============================================================ */
+
+.link-item {
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    color: inherit;
+}
+
+
+.link-item .fa-chevron-right {
+
+    flex-shrink: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.link-item:hover .fa-chevron-right {
+
+    color: var(--primary);
+
+    transform: translateX(3px);
+}
+
+
+/* ============================================================
+   VERSION BADGE
+   ============================================================ */
+
+.version-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 30px;
+
+    padding: 4px 11px;
+
+    box-sizing: border-box;
+
+    border-radius: 999px;
+
+    background: rgba(57, 81, 118, 0.1);
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+.toast {
+
+    position: fixed;
+
+    left: 50%;
+    bottom: 28px;
+
+    z-index: 3000;
+
+    max-width: calc(100vw - 40px);
+
+    padding: 11px 18px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    background: var(--primary-dark);
+
+    color: var(--white);
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.15);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform: translateX(-50%) translateY(15px);
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+/* AngularJS toast */
+
+.toast.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateX(-50%) translateY(0);
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .settings-page {
+
+        padding: 25px 22px 50px;
+    }
+
+    .settings-layout {
+
+        grid-template-columns: 210px minmax(0, 1fr);
+
+        gap: 20px;
+    }
+
+    .settings-nav-item {
+
+        padding: 10px 11px;
+
+        font-size: 13px;
+    }
+
+    .setting-item {
+
+        padding: 16px 17px;
+    }
+
+}
+
+
+/* ============================================================
+   900px – NAVIGATION BECOMES HORIZONTAL
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .settings-layout {
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+
+    .settings-nav {
+
+        position: static;
+
+        width: 100%;
+
+        flex-direction: row;
+
+        overflow-x: auto;
+
+        gap: 5px;
+
+        padding: 6px;
+
+        scrollbar-width: thin;
+    }
+
+
+    .settings-nav-item {
+
+        width: auto;
+
+        min-width: max-content;
+
+        flex-shrink: 0;
+
+        justify-content: center;
+
+        padding: 9px 13px;
+    }
+
+
+    .settings-nav-item i {
+
+        display: none;
+    }
+
+
+    .settings-content {
+
+        gap: 30px;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .settings-page {
+
+        padding: 20px 14px 40px;
+    }
+
+
+    .settings-header {
+
+        margin-bottom: 20px;
+    }
+
+
+    .settings-header h1 {
+
+        font-size: 25px;
+    }
+
+
+    .settings-subtitle {
+
+        font-size: 13px;
+
+        line-height: 1.5;
+    }
+
+
+    .settings-nav {
+
+        border-radius: 13px;
+    }
+
+
+    .settings-nav-item {
+
+        min-height: 40px;
+
+        padding: 8px 12px;
+
+        font-size: 12px;
+    }
+
+
+    .section-title {
+
+        font-size: 18px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .setting-item {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 13px;
+
+        padding: 16px;
+    }
+
+
+    .setting-info {
+
+        width: 100%;
+    }
+
+
+    .setting-info h3 {
+
+        font-size: 14px;
+    }
+
+
+    .setting-info p {
+
+        font-size: 12px;
+    }
+
+
+    /* Buttons full/comfortable width */
+
+    .setting-item > .btn,
+    .setting-item > a.btn {
+
+        align-self: flex-start;
+    }
+
+
+    /* Select */
+
+    .form-select {
+
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    /* Toggle remains right-sized */
+
+    .toggle {
+
+        align-self: flex-start;
+    }
+
+
+    /* Radio */
+
+    .radio-group {
+
+        grid-template-columns: 1fr;
+
+        gap: 8px;
+    }
+
+
+    /* Themes */
+
+    .theme-selector {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .theme-card {
+
+        min-height: 75px;
+
+        flex-direction: row;
+
+        justify-content: flex-start;
+
+        padding: 14px 16px;
+    }
+
+
+    /* Token */
+
+    .token-balance {
+
+        min-height: auto;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 20px;
+    }
+
+
+    .token-balance .balance {
+
+        font-size: 28px;
+    }
+
+
+    .token-balance .btn {
+
+        width: 100%;
+    }
+
+
+    /* Modal */
+
+    .modal {
+
+        padding: 20px;
+
+        border-radius: 14px;
+    }
+
+
+    .modal-actions {
+
+        flex-direction: column-reverse;
+
+        width: 100%;
+    }
+
+
+    .modal-actions .btn {
+
+        width: 100%;
+    }
+
+
+    /* Toast */
+
+    .toast {
+
+        bottom: 20px;
+
+        width: calc(100vw - 30px);
+
+        max-width: none;
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    .settings-page {
+
+        padding-left: 10px;
+
+        padding-right: 10px;
+    }
+
+
+    .setting-info {
+
+        gap: 10px;
+    }
+
+
+    .setting-icon {
+
+        width: 34px;
+        height: 34px;
+
+        font-size: 13px;
+    }
+
+
+    .settings-nav-item {
+
+        padding: 8px 10px;
+    }
+
+}

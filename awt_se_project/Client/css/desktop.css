@@ -21,7 +21,7 @@
     --text-muted: #64748b;
 
     /* === Smooth transition colours (change these to recolour the blend) === */
-    /* 1. Add these variables inside :root */
+   
     --gradient-color-1: #E8F0FE;
     --gradient-color-2: #EEF2F9;
     --gradient-color-3: #F0E9F7;

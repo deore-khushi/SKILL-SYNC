@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
   revealElements.forEach(el => observer.observe(el));
 
 
-
   // ---------- REDUCED MOTION SAFETY ----------
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     heroImages.forEach(img => {

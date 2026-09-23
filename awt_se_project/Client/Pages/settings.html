@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="skillSyncApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings • SkillSync</title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="../css/desktop.css">
+    <link rel="stylesheet" href="../css/sidebar_header.css">
+    
+
+    <!-- Settings CSS -->
+    <link rel="stylesheet" href="../css/settings.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body ng-controller="SettingsController">
+
+<div class="dashboard" ng-class="{'sidebar-open': sidebarOpen}">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+
+        <div class="header-left">
+
+            <button class="menu-btn"
+                    ng-click="toggleSidebar()"
+                    aria-label="Toggle navigation menu">
+                ☰
+            </button>
+
+            <div class="logo">
+                <img src="images/logo.png"
+                     alt="SkillSync Logo"
+                     class="logo-icon">
+                𝗌𝗄𝗂𝗅𝗅𝗌𝗒𝗇𝖼
+            </div>
+
+        </div>
+
+        <!-- Search -->
+
+        <div class="search-box">
+
+            <span aria-hidden="true">⌕</span>
+
+            <input type="text"
+                   placeholder="Search skills, students..."
+                   ng-model="searchText">
+
+        </div>
+
+        <!-- Header Right -->
+
+        <div class="header-right">
+
+            <button class="header-icon"
+                    aria-label="Notifications">
+                🔔
+            </button>
+
+            <button class="header-icon"
+                    aria-label="Messages">
+                💬
+            </button>
+
+            <div class="token-display">
+                <span>🪙</span>
+                <strong>{{tokens}}</strong>
+            </div>
+
+            <!-- Profile -->
+
+            <div class="profile-menu"
+                 ng-click="toggleProfileMenu()">
+
+                <div class="profile-picture">
+                    A
+                </div>
+
+                <span class="profile-name">
+                    Aastha
+                </span>
+
+                <span class="arrow">
+                    ⌄
+                </span>
+
+                <div class="profile-dropdown"
+                     ng-show="profileOpen">
+
+                    <div class="profile-info">
+
+                        <strong>
+                            Aastha Lakkad
+                        </strong>
+
+                        <span>
+                            aastha@example.com
+                        </span>
+
+                    </div>
+
+                    <hr>
+
+                    <a href="profile.html">
+                        👤 My Profile
+                    </a>
+
+                    <a href="settings.html">
+                        ⚙ Settings
+                    </a>
+
+                    <a href=""
+                       ng-click="logout()">
+                        ↪ Sign Out
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar"
+           ng-class="{'sidebar-open': sidebarOpen}">
+
+        <nav>
+
+            <a href="firstLogin.html"
+               class="nav-item">
+
+                <span>🏠</span>
+                <span>Home</span>
+
+            </a>
+
+            <a href="learnSkills.html"
+               class="nav-item">
+
+                <span>📚</span>
+                <span>Learn Skills</span>
+
+            </a>
+
+            <a href="teachSkills.html"
+               class="nav-item">
+
+                <span>🎓</span>
+                <span>Teach Skills</span>
+
+            </a>
+
+            <a href="findTeam.html"
+               class="nav-item">
+
+                <span>👥</span>
+                <span>Find Teammates</span>
+
+            </a>
+
+            <a href="profile.html"
+               class="nav-item">
+
+                <span>👤</span>
+                <span>My Profile</span>
+
+            </a>
+
+            <div class="nav-submenu">
+
+                <a href="achievements.html">
+                    🏆 Achievements
+                </a>
+
+                <a href="wallet.html">
+                    🪙 Skill Wallet
+                </a>
+
+                <a href="projects.html">
+                    📂 My Projects
+                </a>
+
+                <a href="buildResume.html">
+                    📄 Build Resume
+                </a>
+
+            </div>
+
+            <a href="settings.html"
+               class="nav-item active">
+
+                <span>⚙</span>
+                <span>Settings</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN SETTINGS ================= -->
+
+    <main class="settings-page">
+
+        <!-- Page Header -->
+
+        <div class="settings-header">
+
+            <h1>⚙️ Settings</h1>
+
+            <p class="settings-subtitle">
+                Manage your account, privacy, notifications,
+                appearance, and Skill Token preferences.
+            </p>
+
+        </div>
+
+
+        <div class="settings-layout">
+
+            <!-- ================= SETTINGS NAV ================= -->
+
+            <nav class="settings-nav">
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'account'}"
+                        ng-click="selectSection('account')">
+
+                    <i class="fa-solid fa-user"></i>
+                    Account
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'notifications'}"
+                        ng-click="selectSection('notifications')">
+
+                    <i class="fa-solid fa-bell"></i>
+                    Notifications
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'privacy'}"
+                        ng-click="selectSection('privacy')">
+
+                    <i class="fa-solid fa-lock"></i>
+                    Privacy & Security
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'appearance'}"
+                        ng-click="selectSection('appearance')">
+
+                    <i class="fa-solid fa-palette"></i>
+                    Appearance
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'tokens'}"
+                        ng-click="selectSection('tokens')">
+
+                    <i class="fa-solid fa-coins"></i>
+                    Skill Tokens
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'communication'}"
+                        ng-click="selectSection('communication')">
+
+                    <i class="fa-solid fa-comments"></i>
+                    Communication
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'help'}"
+                        ng-click="selectSection('help')">
+
+                    <i class="fa-solid fa-circle-question"></i>
+                    Help & Support
+
+                </button>
+
+
+                <button class="settings-nav-item"
+                        ng-class="{active: activeSection === 'about'}"
+                        ng-click="selectSection('about')">
+
+                    <i class="fa-solid fa-info-circle"></i>
+                    About
+
+                </button>
+
+            </nav>
+
+
+            <!-- ================= RIGHT CONTENT ================= -->
+
+            <div class="settings-content">
+
+
+                <!-- ========== ACCOUNT ========== -->
+
+                <section class="settings-section"
+                         id="account">
+
+                    <h2 class="section-title">
+                        👤 Account Settings
+                    </h2>
+
+                    <div class="settings-card">
+
+
+                        <!-- Edit Profile -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-user-pen setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Edit Profile</h3>
+
+                                    <p>
+                                        Update your name, bio, skills and profile picture
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <a href="profile.html"
+                               class="btn btn-outline">
+                                Edit
+                            </a>
+
+                        </div>
+
+
+                        <!-- Email -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-envelope setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Change Email</h3>
+
+                                    <p>
+                                        Update the email address linked to your account
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn-outline"
+                                    ng-click="openModal('emailModal')">
+                                Change
+                            </button>
+
+                        </div>
+
+
+                        <!-- Password -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-key setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Change Password</h3>
+
+                                    <p>
+                                        Set a new secure password for your account
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn-outline"
+                                    ng-click="openModal('passwordModal')">
+                                Change
+                            </button>
+
+                        </div>
+
+
+                        <!-- Visibility -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-eye setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Profile Visibility</h3>
+
+                                    <p>
+                                        Control who can see your full profile
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <select class="form-select"
+                                    ng-model="settings.profileVisibility">
+
+                                <option value="everyone">
+                                    Everyone
+                                </option>
+
+                                <option value="users">
+                                    SkillSync Users
+                                </option>
+
+                                <option value="connections">
+                                    Only Connections
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Delete -->
+
+                        <div class="setting-item danger">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-trash setting-icon danger-icon"></i>
+
+                                <div>
+
+                                    <h3>Delete Account</h3>
+
+                                    <p>
+                                        Permanently remove your account and all data
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn-danger"
+                                    ng-click="openModal('deleteModal')">
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== NOTIFICATIONS ========== -->
+
+                <section class="settings-section"
+                         id="notifications">
+
+                    <h2 class="section-title">
+                        🔔 Notification Settings
+                    </h2>
+
+                    <div class="settings-card">
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-envelope setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Email Notifications</h3>
+
+                                    <p>
+                                        Receive important updates via email
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.emailNotifications">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-handshake setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Skill Match Notifications</h3>
+
+                                    <p>
+                                        Get notified when a skill match is found
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.skillMatchNotifications">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-comment setting-icon"></i>
+
+                                <div>
+
+                                    <h3>New Message Notifications</h3>
+
+                                    <p>
+                                        Alert when you receive a new message
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.messageNotifications">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-briefcase setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Project Invitations</h3>
+
+                                    <p>
+                                        Notify me about new project invites
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.projectNotifications">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-coins setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Token / Earning Notifications</h3>
+
+                                    <p>
+                                        Updates about Skill Token activity
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.tokenNotifications">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== PRIVACY ========== -->
+
+                <section class="settings-section"
+                         id="privacy">
+
+                    <h2 class="section-title">
+                        🔒 Privacy & Security
+                    </h2>
+
+                    <div class="settings-card">
+
+
+                        <div class="setting-item vertical">
+
+                            <h3>
+                                Who can view my profile?
+                            </h3>
+
+                            <div class="radio-group">
+
+                                <label class="radio-card">
+
+                                    <input type="radio"
+                                           name="profileView"
+                                           value="everyone"
+                                           ng-model="settings.profileView">
+
+                                    <span>Everyone</span>
+
+                                </label>
+
+
+                                <label class="radio-card">
+
+                                    <input type="radio"
+                                           name="profileView"
+                                           value="users"
+                                           ng-model="settings.profileView">
+
+                                    <span>SkillSync Users</span>
+
+                                </label>
+
+
+                                <label class="radio-card">
+
+                                    <input type="radio"
+                                           name="profileView"
+                                           value="connections"
+                                           ng-model="settings.profileView">
+
+                                    <span>Only Connections</span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Show Email -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-at setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Show Email</h3>
+
+                                    <p>
+                                        Display your email on your public profile
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.showEmail">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-phone setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Show Phone Number</h3>
+
+                                    <p>
+                                        Display your phone number on your profile
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.showPhone">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- 2FA -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-shield-halved setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Two-Factor Authentication</h3>
+
+                                    <p>
+                                        Add an extra layer of security to your account
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.twoFactor">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- Login -->
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-clock-rotate-left setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Login Activity</h3>
+
+                                    <p>
+                                        Review recent sign-ins and devices
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn-outline"
+                                    ng-click="showToast('Login activity feature coming soon')">
+
+                                View Login Activity
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== APPEARANCE ========== -->
+
+                <section class="settings-section"
+                         id="appearance">
+
+                    <h2 class="section-title">
+                        🎨 Appearance
+                    </h2>
+
+                    <div class="settings-card">
+
+                        <div class="theme-selector">
+
+                            <label class="theme-option">
+
+                                <input type="radio"
+                                       name="theme"
+                                       value="light"
+                                       ng-model="settings.theme"
+                                       ng-change="changeTheme()">
+
+                                <div class="theme-card">
+
+                                    <i class="fa-solid fa-sun"></i>
+
+                                    <span>
+                                        Light Mode
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="theme-option">
+
+                                <input type="radio"
+                                       name="theme"
+                                       value="dark"
+                                       ng-model="settings.theme"
+                                       ng-change="changeTheme()">
+
+                                <div class="theme-card">
+
+                                    <i class="fa-solid fa-moon"></i>
+
+                                    <span>
+                                        Dark Mode
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="theme-option">
+
+                                <input type="radio"
+                                       name="theme"
+                                       value="system"
+                                       ng-model="settings.theme"
+                                       ng-change="changeTheme()">
+
+                                <div class="theme-card">
+
+                                    <i class="fa-solid fa-desktop"></i>
+
+                                    <span>
+                                        System Default
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== TOKENS ========== -->
+
+                <section class="settings-section"
+                         id="tokens">
+
+                    <h2 class="section-title">
+                        💰 Skill Token Settings
+                    </h2>
+
+
+                    <div class="settings-card token-balance-card">
+
+                        <div class="token-balance">
+
+                            <div>
+
+                                <p class="label">
+                                    Current Skill Token Balance
+                                </p>
+
+                                <h2 class="balance">
+                                    {{tokenBalance}}
+                                    <span>ST</span>
+                                </h2>
+
+                            </div>
+
+                            <button class="btn btn-primary"
+                                    ng-click="showToast('Token history opened')">
+
+                                View Token History
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-card">
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-clock-rotate-left setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        Token Transaction History
+                                    </h3>
+
+                                    <p>
+                                        See all earned and spent Skill Tokens
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn-outline"
+                                    ng-click="showToast('Token history opened')">
+
+                                View History
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="setting-item vertical">
+
+                            <h3>
+                                Token Usage Preferences
+                            </h3>
+
+                            <div class="checkbox-group">
+
+                                <label class="checkbox-item">
+
+                                    <input type="checkbox"
+                                           ng-model="settings.autoTokenUse">
+
+                                    <span>
+                                        Automatically use tokens for skill boosts
+                                    </span>
+
+                                </label>
+
+
+                                <label class="checkbox-item">
+
+                                    <input type="checkbox"
+                                           ng-model="settings.tokenConfirmation">
+
+                                    <span>
+                                        Notify me before spending tokens
+                                    </span>
+
+                                </label>
+
+
+                                <label class="checkbox-item">
+
+                                    <input type="checkbox"
+                                           ng-model="settings.projectTokenUse">
+
+                                    <span>
+                                        Allow tokens to be used for project unlocks
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== COMMUNICATION ========== -->
+
+                <section class="settings-section"
+                         id="communication">
+
+                    <h2 class="section-title">
+                        📩 Communication
+                    </h2>
+
+                    <div class="settings-card">
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-user-plus setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        Allow Connection Requests
+                                    </h3>
+
+                                    <p>
+                                        Let other users send you connection requests
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.allowConnections">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-briefcase setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        Allow Project Invitations
+                                    </h3>
+
+                                    <p>
+                                        Receive invitations to join projects
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.allowProjects">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-message setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        Allow Messages from New Users
+                                    </h3>
+
+                                    <p>
+                                        Let people you haven't connected with message you
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <label class="toggle">
+
+                                <input type="checkbox"
+                                       ng-model="settings.allowNewMessages">
+
+                                <span class="toggle-slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== HELP ========== -->
+
+                <section class="settings-section"
+                         id="help">
+
+                    <h2 class="section-title">
+                        🛠️ Help & Support
+                    </h2>
+
+                    <div class="settings-card">
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('Help Center opened')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-book setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Help Center</h3>
+
+                                    <p>
+                                        Browse guides and documentation
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('Report Problem opened')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-bug setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Report a Problem</h3>
+
+                                    <p>
+                                        Let us know about bugs or issues
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('Contact Support opened')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-headset setting-icon"></i>
+
+                                <div>
+
+                                    <h3>Contact Support</h3>
+
+                                    <p>
+                                        Get in touch with our support team
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('FAQs opened')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-circle-question setting-icon"></i>
+
+                                <div>
+
+                                    <h3>FAQs</h3>
+
+                                    <p>
+                                        Frequently asked questions
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ========== ABOUT ========== -->
+
+                <section class="settings-section"
+                         id="about">
+
+                    <h2 class="section-title">
+                        ℹ️ About
+                    </h2>
+
+                    <div class="settings-card">
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('About SkillSync')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-info-circle setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        About SkillSync
+                                    </h3>
+
+                                    <p>
+                                        Learn more about the platform
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('Terms & Conditions')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-file-contract setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        Terms & Conditions
+                                    </h3>
+
+                                    <p>
+                                        Read our terms of service
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+                        <div class="setting-item link-item"
+                             ng-click="showToast('Privacy Policy')">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-shield setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        Privacy Policy
+                                    </h3>
+
+                                    <p>
+                                        How we handle your data
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <i class="fa-solid fa-code-branch setting-icon"></i>
+
+                                <div>
+
+                                    <h3>
+                                        App Version
+                                    </h3>
+
+                                    <p>
+                                        Current version of SkillSync
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <span class="version-badge">
+                                v1.4.2
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= DELETE MODAL ================= -->
+
+    <div class="modal-overlay"
+         ng-class="{show: modal === 'deleteModal'}"
+         ng-click="closeModal()">
+
+        <div class="modal"
+             ng-click="$event.stopPropagation()">
+
+            <h3>
+                Delete Account?
+            </h3>
+
+            <p>
+                This action is permanent and cannot be undone.
+                All your data, skills and tokens will be removed.
+            </p>
+
+            <div class="modal-actions">
+
+                <button class="btn btn-outline"
+                        ng-click="closeModal()">
+                    Cancel
+                </button>
+
+                <button class="btn btn-danger"
+                        ng-click="confirmDelete()">
+                    Yes, Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= EMAIL MODAL ================= -->
+
+    <div class="modal-overlay"
+         ng-class="{show: modal === 'emailModal'}"
+         ng-click="closeModal()">
+
+        <div class="modal"
+             ng-click="$event.stopPropagation()">
+
+            <h3>
+                Change Email
+            </h3>
+
+            <input type="email"
+                   class="form-input"
+                   placeholder="New email address"
+                   ng-model="newEmail">
+
+            <div class="modal-actions">
+
+                <button class="btn btn-outline"
+                        ng-click="closeModal()">
+                    Cancel
+                </button>
+
+                <button class="btn btn-primary"
+                        ng-click="saveEmail()">
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= PASSWORD MODAL ================= -->
+
+    <div class="modal-overlay"
+         ng-class="{show: modal === 'passwordModal'}"
+         ng-click="closeModal()">
+
+        <div class="modal"
+             ng-click="$event.stopPropagation()">
+
+            <h3>
+                Change Password
+            </h3>
+
+            <input type="password"
+                   class="form-input"
+                   placeholder="Current password"
+                   ng-model="password.current">
+
+            <input type="password"
+                   class="form-input"
+                   placeholder="New password"
+                   ng-model="password.newPassword">
+
+            <input type="password"
+                   class="form-input"
+                   placeholder="Confirm new password"
+                   ng-model="password.confirmPassword">
+
+            <div class="modal-actions">
+
+                <button class="btn btn-outline"
+                        ng-click="closeModal()">
+                    Cancel
+                </button>
+
+                <button class="btn btn-primary"
+                        ng-click="savePassword()">
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TOAST ================= -->
+
+    <div class="toast"
+         ng-class="{show: toastVisible}">
+
+        {{toastMessage}}
+
+    </div>
+
+</div>
+
+
+<!-- ================= ANGULARJS ================= -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+
+<!-- Your main AngularJS app -->
+<script src="../js/app.js"></script>
+
+<!-- Settings Controller -->
+<script src="../Controllers/settingsController.js"></script>
+
+</body>
+</html>
